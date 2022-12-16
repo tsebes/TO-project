@@ -6,6 +6,7 @@ public class RunGame {
 
     private RunGame(String value) {
         this.value = value;
+        try {
         if(value.equals("Checkers")){
             GameCreator creator = new CheckersCreator();
             BoardGame game = creator.crateGame();
@@ -15,6 +16,9 @@ public class RunGame {
             GameCreator creator = new KnightsCreator();
             BoardGame game = creator.crateGame();
             game.start();
+        }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
     //usuwanie instancji
