@@ -1,4 +1,7 @@
+package gui;
+
 import javax.swing.*;
+import game.RunGame;
 
 public class Platform extends JFrame {
     public void showPlatform() {

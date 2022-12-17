@@ -1,3 +1,4 @@
+package game;
 
 //singleton odpowiadajacy za uruchomienie tylko jednej gry w danym momencie
 public class RunGame {
