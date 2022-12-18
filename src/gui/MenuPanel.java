@@ -15,14 +15,20 @@ public class MenuPanel extends JPanel implements Observable {
             setPreferredSize(new Dimension(540,440));
             setBackground(Color.GRAY);
             setLayout(null);
+            addTitle();
             addCheckersButton();
             addKnightsButton();
         }
-
+        private void addTitle(){
+            JLabel title = new JLabel("Board Games Platform");
+            title.setFont(new Font("Serif", Font.PLAIN, 40));
+            title.setBounds(80, 120, 400, 50);
+            add(title);
+        }
         private void addCheckersButton(){
             JButton checkersButton = new JButton("Checkers");
             checkersButton.setBackground(new java.awt.Color(113, 167, 148));
-            checkersButton.setBounds(60, 170, 100, 50);
+            checkersButton.setBounds(100, 240, 100, 50);
             add(checkersButton);
             //akcja przycisków z wykorzystaniem singletonu
             checkersButton.addActionListener(e -> {
@@ -35,7 +41,7 @@ public class MenuPanel extends JPanel implements Observable {
         private void addKnightsButton(){
             JButton knightsButton = new JButton("Knights");
             knightsButton.setBackground(new java.awt.Color(113, 167, 148));
-            knightsButton.setBounds(220, 170, 100, 50);
+            knightsButton.setBounds(300, 240, 100, 50);
             add(knightsButton);
             //akcja przycisków z wykorzystaniem singletonu
             knightsButton.addActionListener(e -> {
