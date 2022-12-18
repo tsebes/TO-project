@@ -1,8 +1,7 @@
-import gui.Platform;
+import gui.GUI;
 
 public class Main {
     public static void main(String[] args) {
-        Platform platform = new Platform();
-        platform.showPlatform();
+        new GUI();
     }
 }
