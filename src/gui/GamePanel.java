@@ -2,7 +2,7 @@ package gui;
 
 import javax.swing.*;
 
-public class GamePanel extends JPanel{
+public class GamePanel extends JPanel {
     JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
 
     public GamePanel(BoardPanel boardPanel, ControlPanel controlPanel) {

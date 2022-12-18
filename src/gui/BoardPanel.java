@@ -16,7 +16,7 @@ public class BoardPanel extends JPanel {
     private static final Color DARK = new Color(181, 136, 99);
     private static final Color LIGHT = new Color(240, 217, 181);
 
-    private final List<Tile> tiles = new ArrayList<>(TILE_COUNT*TILE_COUNT);
+    private final List<Tile> tiles = new ArrayList<>(TILE_COUNT * TILE_COUNT);
 
     public BoardPanel() {
         setPreferredSize(new Dimension(Tile.SIZE * TILE_COUNT, Tile.SIZE * TILE_COUNT));

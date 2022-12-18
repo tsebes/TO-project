@@ -9,10 +9,10 @@ import java.util.Set;
 
 public class ControlPanel extends JPanel implements Observable {
 
-    private Set<Observer> observers = new HashSet<>();
+    private final Set<Observer> observers = new HashSet<>();
 
     public ControlPanel() {
-        setPreferredSize(new Dimension(200,640));
+        setPreferredSize(new Dimension(200, 640));
         setBackground(Color.GRAY);
         setLayout(null);
         addUndoButton();
@@ -20,7 +20,7 @@ public class ControlPanel extends JPanel implements Observable {
         addLeaveButton();
     }
 
-    private void addUndoButton(){
+    private void addUndoButton() {
         JButton undo = new JButton("Undo");
         undo.setBackground(new java.awt.Color(113, 167, 148));
         undo.setBounds(60, 170, 100, 50);
@@ -30,7 +30,7 @@ public class ControlPanel extends JPanel implements Observable {
         });
     }
 
-    private void addRedoButton(){
+    private void addRedoButton() {
         JButton redo = new JButton("Redo");
         redo.setBackground(new java.awt.Color(113, 167, 148));
         redo.setBounds(60, 250, 100, 50);
@@ -40,7 +40,7 @@ public class ControlPanel extends JPanel implements Observable {
         });
     }
 
-    private void addLeaveButton(){
+    private void addLeaveButton() {
         JButton leave = new JButton("Leave");
         leave.setBackground(new java.awt.Color(113, 167, 148));
         leave.setBounds(60, 480, 100, 50);
