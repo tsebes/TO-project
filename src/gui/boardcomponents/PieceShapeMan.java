@@ -15,6 +15,11 @@ public class PieceShapeMan implements Shape {
     }
 
     @Override
+    public Color getColor() {
+        return color;
+    }
+
+    @Override
     public void draw(Graphics g) {
         g.setColor(Color.BLACK);
         g.fillOval(MARGIN, MARGIN, SIZE, SIZE);

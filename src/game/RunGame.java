@@ -4,22 +4,27 @@ package game;
 public class RunGame {
     private static RunGame instance;
     private final String value;
+    private BoardGame game;
 
     private RunGame(String value) {
         this.value = value;
         try {
             if (value.equals("Checkers")) {
                 GameCreator creator = new CheckersCreator();
-                BoardGame game = creator.crateGame();
+                game = creator.crateGame();
                 game.start();
             } else if (value.equals("Knights")) {
                 GameCreator creator = new KnightsCreator();
-                BoardGame game = creator.crateGame();
+                game = creator.crateGame();
                 game.start();
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public BoardGame getGame() {
+        return game;
     }
 
     //usuwanie instancji

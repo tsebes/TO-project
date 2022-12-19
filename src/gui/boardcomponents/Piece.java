@@ -10,6 +10,10 @@ public class Piece {
         this.shape = shape;
     }
 
+    public Shape getShape() {
+        return shape;
+    }
+
     public void draw(Graphics g) {
         shape.draw(g);
     }

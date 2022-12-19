@@ -10,8 +10,10 @@ import java.util.Set;
 public class MenuPanel extends JPanel implements Observable {
 
     private final Set<Observer> observers = new HashSet<>();
+    private final GUI gui;
 
-    public MenuPanel() {
+    public MenuPanel(GUI gui) {
+        this.gui = gui;
         setPreferredSize(new Dimension(540, 440));
         setBackground(Color.GRAY);
         setLayout(null);
@@ -35,6 +37,8 @@ public class MenuPanel extends JPanel implements Observable {
         //akcja przycisków z wykorzystaniem singletonu
         checkersButton.addActionListener(e -> {
             RunGame.getInstance("Checkers");
+            gui.setPanel("Checkers");
+            gui.getCheckersBoardPanel().setGame(RunGame.getInstance("Checkers").getGame());
             //zmień panel
             notifyObservers();
         });
@@ -48,6 +52,7 @@ public class MenuPanel extends JPanel implements Observable {
         //akcja przycisków z wykorzystaniem singletonu
         knightsButton.addActionListener(e -> {
             RunGame.getInstance("Knights");
+            gui.setPanel("Knights");
             //zmień panel
             notifyObservers();
         });

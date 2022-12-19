@@ -7,12 +7,12 @@ import java.awt.*;
 import java.util.HashSet;
 import java.util.Set;
 
-public class ControlPanel extends JPanel implements Observable {
+public class CheckersControlPanel extends JPanel implements Observable {
 
     private final Set<Observer> observers = new HashSet<>();
     private final GUI gui;
 
-    public ControlPanel(GUI gui) {
+    public CheckersControlPanel(GUI gui) {
         this.gui = gui;
         setPreferredSize(new Dimension(200, 640));
         setBackground(Color.GRAY);
