@@ -21,9 +21,9 @@ public class KnightsBoard {
         for (int i = 0; i < TILE_COUNT; i++) {
             for (int j = 0; j < TILE_COUNT; j++) {
                 if ((i + j) % 2 != 0) {
-                    if (i < 3) {
+                    if (i < 2) {
                         field[i][j] = new Field(black, man);
-                    } else if (i > 4) {
+                    } else if (i > 5) {
                         field[i][j] = new Field(white, man);
                     } else{
                         field[i][j] = new Field();

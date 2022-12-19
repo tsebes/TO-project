@@ -59,9 +59,9 @@ public class KnightsBoardPanel extends JPanel implements BoardObserver{
         for (int i = 0; i < TILE_COUNT; i++) {
             for (int j = 0; j < TILE_COUNT; j++) {
                 if ((i + j) % 2 != 0) {
-                    if (i < 3) {
+                    if (i < 2) {
                         tiles.get(i * TILE_COUNT + j).setPiece(new Piece(PieceShapeFactory.getBlackMan()));
-                    } else if (i > 4) {
+                    } else if (i > 5) {
                         tiles.get(i * TILE_COUNT + j).setPiece(new Piece(PieceShapeFactory.getWhiteMan()));
                         Coordinates coordinates = new Coordinates(j, i);
                         tiles.get(i * TILE_COUNT + j).addActionListener(e -> game.show(coordinates, false));
