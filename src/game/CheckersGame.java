@@ -13,10 +13,10 @@ public class CheckersGame implements BoardGame {
     private final Set<BoardObserver> observers = new HashSet<>();
 
     private Stack<String> history;
-    private ShowPossibilities showPossibilitiesCommand;
-    private Move moveCommand;
-    private Undo undoCommand;
-    private Redo redoCommand;
+    private ShowPossibilities CShowPossibilitiesCommand;
+    private Move CMoveCommand;
+    private Undo CUndoCommand;
+    private Redo CRedoCommand;
     private CheckersBoard checkersBoard;
 
     @Override
@@ -24,31 +24,31 @@ public class CheckersGame implements BoardGame {
         System.out.println("Checkers game - start");
         history = new Stack<String>();
         checkersBoard = new CheckersBoard();
-        showPossibilitiesCommand = new ShowPossibilities(history, checkersBoard);
-        moveCommand = new Move(history, checkersBoard);
-        undoCommand = new Undo(history, checkersBoard);
-        redoCommand = new Redo(history, checkersBoard);
+        CShowPossibilitiesCommand = new ShowPossibilities(history, checkersBoard);
+        CMoveCommand = new Move(history, checkersBoard);
+        CUndoCommand = new Undo(history, checkersBoard);
+        CRedoCommand = new Redo(history, checkersBoard);
     }
 
     @Override
     public void show(Coordinates piece, boolean multipleTake){
-        showPossibilitiesCommand.setShow(piece, multipleTake);
-        showPossibilitiesCommand.execute();
+        CShowPossibilitiesCommand.setShow(piece, multipleTake);
+        CShowPossibilitiesCommand.execute();
         if(multipleTake){
-            this.notifyBoardObservers("ShowPossibilitesContinue", piece, showPossibilitiesCommand.getPlaces());
+            this.notifyBoardObservers("ShowPossibilitesContinue", piece, CShowPossibilitiesCommand.getPlaces());
         }else{
-            this.notifyBoardObservers("ShowPossibilites", piece, showPossibilitiesCommand.getPlaces());
+            this.notifyBoardObservers("ShowPossibilites", piece, CShowPossibilitiesCommand.getPlaces());
         }
     }
 
     @Override
     public void move(Coordinates start, Coordinates end){
-        moveCommand.setMove(start, end);
-        moveCommand.execute();
-        if(moveCommand.isMultipleTake()){
-            this.notifyBoardObservers("MoveCanContinue", start, moveCommand.getPlaces());
+        CMoveCommand.setMove(start, end);
+        CMoveCommand.execute();
+        if(CMoveCommand.isMultipleTake()){
+            this.notifyBoardObservers("MoveCanContinue", start, CMoveCommand.getPlaces());
         }else{
-            this.notifyBoardObservers("Move", start, moveCommand.getPlaces());
+            this.notifyBoardObservers("Move", start, CMoveCommand.getPlaces());
         }
     }
 

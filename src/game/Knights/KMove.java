@@ -1,19 +1,18 @@
-package game.Checkers;
+package game.Knights;
 
 import game.Coordinates;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
-public class Move extends Command {
+public class KMove extends KCommand {
     boolean multipleTake;
     private Coordinates piece = new Coordinates();
     private Coordinates end = new Coordinates();
     private List<Coordinates> places = new ArrayList<>();
 
-    public Move(Stack<String> history, CheckersBoard checkersBoard) {
-        super(history, checkersBoard);
+    public KMove(Stack<String> history, KnightsBoard knightsBoard) {
+        super(history, knightsBoard);
     }
 
     public void setMove(Coordinates piece, Coordinates end){
@@ -31,10 +30,10 @@ public class Move extends Command {
 
     @Override
     public void execute() {
-        places = checkersBoard.commitMove(piece, end);
-        multipleTake = checkersBoard.isMultipleTake();
+        places = knightsBoard.commitMove(piece, end);
+        multipleTake = knightsBoard.isMultipleTake();
         if(!multipleTake){
-            checkersBoard.endTurn();
+            knightsBoard.endTurn();
         }
     }
 

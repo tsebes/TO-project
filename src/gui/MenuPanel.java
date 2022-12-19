@@ -53,6 +53,7 @@ public class MenuPanel extends JPanel implements Observable {
         knightsButton.addActionListener(e -> {
             RunGame.getInstance("Knights");
             gui.setPanel("Knights");
+            gui.getKnightsBoardPanel().setGame(RunGame.getInstance("Knights").getGame());
             //zmień panel
             notifyObservers();
         });

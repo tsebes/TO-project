@@ -1,4 +1,4 @@
-package game.Checkers;
+package game.Knights;
 
 import game.Coordinates;
 
@@ -6,14 +6,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
-public class ShowPossibilities extends Command {
+public class KShowPossibilities extends KCommand {
     private Coordinates piece = new Coordinates();
     private List<Coordinates> places = new ArrayList<>();
     private boolean mulitpleTake;
 
 
-    public ShowPossibilities(Stack<String> history, CheckersBoard checkersBoard) {
-        super(history, checkersBoard);
+    public KShowPossibilities(Stack<String> history, KnightsBoard knightsBoard) {
+        super(history, knightsBoard);
     }
 
     public void setShow(Coordinates piece, boolean multipleTake){
@@ -31,7 +31,7 @@ public class ShowPossibilities extends Command {
 
     @Override
     public void execute() {
-        places = checkersBoard.possibleMoves(piece, mulitpleTake);
+        places = knightsBoard.possibleMoves(piece, mulitpleTake);
     }
 
     @Override

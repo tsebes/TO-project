@@ -1,4 +1,4 @@
-package game.Checkers;
+package game.Knights;
 
 import gui.Observer;
 
@@ -6,21 +6,21 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.Stack;
 
-public abstract class Command {
+public abstract class KCommand {
     public Stack<String> history = new Stack<String>();
-    public CheckersBoard checkersBoard = new CheckersBoard();
+    public KnightsBoard knightsBoard = new KnightsBoard();
     private final Set<Observer> observers = new HashSet<>();
 
     abstract void execute();
 
     abstract void updateHistory();
 
-    Command(Stack<String> history, CheckersBoard checkersBoard){
+    KCommand(Stack<String> history, KnightsBoard knightsBoard){
         this.history = history;
-        this.checkersBoard = checkersBoard;
+        this.knightsBoard = knightsBoard;
     }
 
-    public CheckersBoard getCheckersBoard() {
-        return checkersBoard;
+    public KnightsBoard getKnightsBoard() {
+        return knightsBoard;
     }
 }

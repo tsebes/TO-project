@@ -4,10 +4,10 @@ import javax.swing.*;
 
 public class GUI extends JFrame implements Observer {
 
-    private final BoardPanel boardPanel;
     private final MenuPanel menuPanel;
-    private final GamePanel gamePanel;
-    private final ControlPanel controlPanel;
+    private final KnightsBoardPanel knightsBoardPanel;
+    private final KnightsGamePanel knightsGamePanel;
+    private final KnightsControlPanel knightsControlPanel;
     private final CheckersBoardPanel checkersBoardPanel;
     private final CheckersGamePanel checkersGamePanel;
     private final CheckersControlPanel checkersControlPanel;
@@ -16,15 +16,15 @@ public class GUI extends JFrame implements Observer {
 
     public GUI() {
         menuPanel = new MenuPanel(this);
-        boardPanel = new BoardPanel();
+        knightsBoardPanel = new KnightsBoardPanel();
         checkersBoardPanel = new CheckersBoardPanel();
-        controlPanel = new ControlPanel(this);
+        knightsControlPanel = new KnightsControlPanel(this);
         checkersControlPanel = new CheckersControlPanel(this);
-        gamePanel = new GamePanel(boardPanel, controlPanel);
+        knightsGamePanel = new KnightsGamePanel(knightsBoardPanel, knightsControlPanel);
         checkersGamePanel = new CheckersGamePanel(checkersBoardPanel, checkersControlPanel);
 
         menuPanel.addObserver(this);
-        controlPanel.addObserver(this);
+        knightsControlPanel.addObserver(this);
         checkersControlPanel.addObserver(this);
         configureFrame();
         setVisible(true);
@@ -40,12 +40,11 @@ public class GUI extends JFrame implements Observer {
     }
 
     public void changePanel() {
-        //if (menuPanel.isVisible()) {
         if (panel.equals("Knights")) {
             menuPanel.setVisible(false);
-            setContentPane(gamePanel);
+            setContentPane(knightsGamePanel);
             pack();
-            gamePanel.setVisible(true);
+            knightsGamePanel.setVisible(true);
         } else if (panel.equals("Checkers")) {
             menuPanel.setVisible(false);
             setContentPane(checkersGamePanel);
@@ -53,7 +52,7 @@ public class GUI extends JFrame implements Observer {
             checkersGamePanel.setVisible(true);
         } else if (panel.equals("Menu")) {
             checkersGamePanel.setVisible(false);
-            gamePanel.setVisible(false);
+            knightsGamePanel.setVisible(false);
             setContentPane(menuPanel);
             pack();
             menuPanel.setVisible(true);
@@ -66,6 +65,10 @@ public class GUI extends JFrame implements Observer {
 
     public CheckersBoardPanel getCheckersBoardPanel() {
         return checkersBoardPanel;
+    }
+
+    public KnightsBoardPanel getKnightsBoardPanel() {
+        return knightsBoardPanel;
     }
 
     @Override

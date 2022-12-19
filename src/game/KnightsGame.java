@@ -1,28 +1,57 @@
 package game;
 
+
+
+import game.Knights.*;
 import gui.BoardObserver;
 
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.Stack;
 
 public class KnightsGame implements BoardGame {
 
     private final Set<BoardObserver> observers = new HashSet<>();
 
+    private Stack<String> history;
+    private KShowPossibilities kShowPossibilitiesCommand;
+    private KMove kMoveCommand;
+    private KUndo kUndoCommand;
+    private KRedo kRedoCommand;
+    private KnightsBoard knightsBoard;
+
     @Override
     public void start() {
         System.out.println("Knights game - start");
+        history = new Stack<String>();
+        knightsBoard = new KnightsBoard();
+        kShowPossibilitiesCommand = new KShowPossibilities(history, knightsBoard);
+        kMoveCommand = new KMove(history, knightsBoard);
+        kUndoCommand = new KUndo(history, knightsBoard);
+        kRedoCommand = new KRedo(history, knightsBoard);
     }
 
     @Override
     public void show(Coordinates piece, boolean multipleTake){
-        //function to add
+        kShowPossibilitiesCommand.setShow(piece, multipleTake);
+        kShowPossibilitiesCommand.execute();
+        if(multipleTake){
+            this.notifyBoardObservers("ShowPossibilitesContinue", piece, kShowPossibilitiesCommand.getPlaces());
+        }else{
+            this.notifyBoardObservers("ShowPossibilites", piece, kShowPossibilitiesCommand.getPlaces());
+        }
     }
 
     @Override
     public void move(Coordinates start, Coordinates end){
-        //function to add
+        kMoveCommand.setMove(start, end);
+        kMoveCommand.execute();
+        if(kMoveCommand.isMultipleTake()){
+            this.notifyBoardObservers("MoveCanContinue", start, kMoveCommand.getPlaces());
+        }else{
+            this.notifyBoardObservers("Move", start, kMoveCommand.getPlaces());
+        }
     }
 
     @Override
