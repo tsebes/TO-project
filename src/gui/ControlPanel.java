@@ -4,16 +4,13 @@ import game.RunGame;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.HashSet;
-import java.util.Set;
 
-public class ControlPanel extends JPanel implements Observable {
+public class ControlPanel extends JPanel {
 
-    private final Set<Observer> observers = new HashSet<>();
-    private final GUI gui;
+    private final GUIObserver guiObserver;
 
-    public ControlPanel(GUI gui) {
-        this.gui = gui;
+    public ControlPanel(GUIObserver guiObserver) {
+        this.guiObserver = guiObserver;
         setPreferredSize(new Dimension(200, 640));
         setBackground(Color.GRAY);
         setLayout(null);
@@ -49,23 +46,7 @@ public class ControlPanel extends JPanel implements Observable {
         add(leave);
         leave.addActionListener(e -> {
             RunGame.clean();
-            gui.setPanel("Menu");
-            notifyObservers();
+            guiObserver.update(GUI.Panel.Menu);
         });
-    }
-
-    @Override
-    public void addObserver(Observer observer) {
-        observers.add(observer);
-    }
-
-    @Override
-    public void removeObserver(Observer observer) {
-        observers.remove(observer);
-    }
-
-    @Override
-    public void notifyObservers() {
-        observers.forEach(Observer::update);
     }
 }

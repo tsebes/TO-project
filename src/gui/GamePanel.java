@@ -3,9 +3,12 @@ package gui;
 import javax.swing.*;
 
 public class GamePanel extends JPanel {
-    JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
+
+    private final BoardPanel boardPanel;
 
     public GamePanel(BoardPanel boardPanel, ControlPanel controlPanel) {
+        this.boardPanel = boardPanel;
+        JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
         splitPane.setLeftComponent(boardPanel);
         splitPane.setRightComponent(controlPanel);
         splitPane.setDividerLocation(640);
@@ -14,5 +17,9 @@ public class GamePanel extends JPanel {
         splitPane.setResizeWeight(0.5);
         splitPane.setEnabled(false);
         add(splitPane);
+    }
+
+    public void updateBoard() {
+        boardPanel.updateBoard();
     }
 }

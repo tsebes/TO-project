@@ -2,30 +2,15 @@ package gui;
 
 import javax.swing.*;
 
-public class GUI extends JFrame implements Observer {
+public class GUI extends JFrame implements GUIObserver {
 
     private final MenuPanel menuPanel;
-    private final KnightsBoardPanel knightsBoardPanel;
-    private final KnightsGamePanel knightsGamePanel;
-    private final KnightsControlPanel knightsControlPanel;
-    private final CheckersBoardPanel checkersBoardPanel;
-    private final CheckersGamePanel checkersGamePanel;
-    private final CheckersControlPanel checkersControlPanel;
-
-    private String panel;
+    private final GamePanel gamePanel;
 
     public GUI() {
         menuPanel = new MenuPanel(this);
-        knightsBoardPanel = new KnightsBoardPanel();
-        checkersBoardPanel = new CheckersBoardPanel();
-        knightsControlPanel = new KnightsControlPanel(this);
-        checkersControlPanel = new CheckersControlPanel(this);
-        knightsGamePanel = new KnightsGamePanel(knightsBoardPanel, knightsControlPanel);
-        checkersGamePanel = new CheckersGamePanel(checkersBoardPanel, checkersControlPanel);
+        gamePanel = new GamePanel(new BoardPanel(), new ControlPanel(this));
 
-        menuPanel.addObserver(this);
-        knightsControlPanel.addObserver(this);
-        checkersControlPanel.addObserver(this);
         configureFrame();
         setVisible(true);
     }
@@ -39,40 +24,31 @@ public class GUI extends JFrame implements Observer {
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     }
 
-    public void changePanel() {
-        if (panel.equals("Knights")) {
-            menuPanel.setVisible(false);
-            setContentPane(knightsGamePanel);
-            pack();
-            knightsGamePanel.setVisible(true);
-        } else if (panel.equals("Checkers")) {
-            menuPanel.setVisible(false);
-            setContentPane(checkersGamePanel);
-            pack();
-            checkersGamePanel.setVisible(true);
-        } else if (panel.equals("Menu")) {
-            checkersGamePanel.setVisible(false);
-            knightsGamePanel.setVisible(false);
-            setContentPane(menuPanel);
-            pack();
-            menuPanel.setVisible(true);
+    public void changePanel(Panel panel) {
+        switch (panel) {
+            case Menu -> {
+                gamePanel.setVisible(false);
+                setContentPane(menuPanel);
+                pack();
+                menuPanel.setVisible(true);
+            }
+            case Game -> {
+                menuPanel.setVisible(false);
+                setContentPane(gamePanel);
+                pack();
+                gamePanel.setVisible(true);
+                gamePanel.updateBoard();
+            }
         }
     }
 
-    public void setPanel(String panel){
-        this.panel = panel;
-    }
-
-    public CheckersBoardPanel getCheckersBoardPanel() {
-        return checkersBoardPanel;
-    }
-
-    public KnightsBoardPanel getKnightsBoardPanel() {
-        return knightsBoardPanel;
-    }
-
     @Override
-    public void update() {
-        changePanel();
+    public void update(Panel panel) {
+        changePanel(panel);
+    }
+
+    public enum Panel {
+        Menu,
+        Game
     }
 }

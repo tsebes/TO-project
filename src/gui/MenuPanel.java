@@ -1,19 +1,18 @@
 package gui;
 
 import game.RunGame;
+import game.creators.CheckersCreator;
+import game.creators.KnightsCreator;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.HashSet;
-import java.util.Set;
 
-public class MenuPanel extends JPanel implements Observable {
+public class MenuPanel extends JPanel {
 
-    private final Set<Observer> observers = new HashSet<>();
-    private final GUI gui;
+    private final GUIObserver guiObserver;
 
-    public MenuPanel(GUI gui) {
-        this.gui = gui;
+    public MenuPanel(GUIObserver guiObserver) {
+        this.guiObserver = guiObserver;
         setPreferredSize(new Dimension(540, 440));
         setBackground(Color.GRAY);
         setLayout(null);
@@ -36,11 +35,8 @@ public class MenuPanel extends JPanel implements Observable {
         add(checkersButton);
         //akcja przycisków z wykorzystaniem singletonu
         checkersButton.addActionListener(e -> {
-            RunGame.getInstance("Checkers");
-            gui.setPanel("Checkers");
-            gui.getCheckersBoardPanel().setGame(RunGame.getInstance("Checkers").getGame());
-            //zmień panel
-            notifyObservers();
+            RunGame.getInstance().newGameWithCreator(new CheckersCreator());
+            guiObserver.update(GUI.Panel.Game);
         });
     }
 
@@ -51,27 +47,8 @@ public class MenuPanel extends JPanel implements Observable {
         add(knightsButton);
         //akcja przycisków z wykorzystaniem singletonu
         knightsButton.addActionListener(e -> {
-            RunGame.getInstance("Knights");
-            gui.setPanel("Knights");
-            gui.getKnightsBoardPanel().setGame(RunGame.getInstance("Knights").getGame());
-            //zmień panel
-            notifyObservers();
+            RunGame.getInstance().newGameWithCreator(new KnightsCreator());
+            guiObserver.update(GUI.Panel.Game);
         });
     }
-
-    @Override
-    public void addObserver(Observer observer) {
-        observers.add(observer);
-    }
-
-    @Override
-    public void removeObserver(Observer observer) {
-        observers.remove(observer);
-    }
-
-    @Override
-    public void notifyObservers() {
-        observers.forEach(Observer::update);
-    }
-
 }

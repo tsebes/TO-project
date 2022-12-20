@@ -20,10 +20,6 @@ public class Tile extends JButton {
         this.piece = piece;
     }
 
-    public Piece getPiece() {
-        return piece;
-    }
-
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
