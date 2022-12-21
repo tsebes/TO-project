@@ -4,7 +4,6 @@ public class Board {
 
     public static final int TILE_COUNT = 8;
     protected final Field[][] fields;
-    private boolean multipleTake;
 
     public Board() {
         fields = new Field[TILE_COUNT][TILE_COUNT];
@@ -16,10 +15,6 @@ public class Board {
 
     public Field[][] getFields() {
         return fields;
-    }
-
-    public boolean isMultipleTake() {
-        return multipleTake;
     }
 
     //Sprawdzanie mozliwosci ruchu normalnego pionka
