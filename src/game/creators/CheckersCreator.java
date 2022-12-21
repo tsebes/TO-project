@@ -3,7 +3,9 @@ package game.creators;
 import game.Board;
 import game.BoardGame;
 import game.CheckersGame;
-import game.enums.Field;
+import game.Field;
+import game.enums.Piece;
+import game.enums.Player;
 
 import static game.Board.TILE_COUNT;
 
@@ -17,12 +19,12 @@ public class CheckersCreator implements GameCreator {
         Field[][] fields = new Field[TILE_COUNT][TILE_COUNT];
         for (int i = 0; i < TILE_COUNT; i++) {
             for (int j = 0; j < TILE_COUNT; j++) {
-                fields[i][j] = game.enums.Field.EMPTY;
+                fields[i][j] = new Field();
                 if ((i + j) % 2 != 0) {
                     if (i < 3) {
-                        fields[i][j] = Field.BLACK_MAN;
+                        fields[i][j] = new Field(Player.BLACK, Piece.MAN);
                     } else if (i > 4) {
-                        fields[i][j] = Field.WHITE_MAN;
+                        fields[i][j] = new Field(Player.WHITE, Piece.MAN);
                     }
                 }
             }

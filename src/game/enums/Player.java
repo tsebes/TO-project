@@ -1,6 +1,6 @@
 package game.enums;
 
-public enum Turn {
+public enum Player {
     WHITE,
     BLACK
 }

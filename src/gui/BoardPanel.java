@@ -1,11 +1,7 @@
 package gui;
 
-import game.Board;
-import game.BoardGame;
-import game.Coordinates;
-import game.RunGame;
-import game.enums.Field;
-import game.enums.Turn;
+import game.*;
+import game.enums.Player;
 import gui.boardcomponents.Piece;
 import gui.boardcomponents.PieceShapeFactory;
 import gui.boardcomponents.Tile;
@@ -46,6 +42,7 @@ public class BoardPanel extends JPanel implements BoardObserver {
     }
 
     public void refreshTiles() {
+        Field[][] fields = board.getFields();
         for (int i = 0; i < TILE_COUNT; i++) {
             for (int j = 0; j < TILE_COUNT; j++) {
                 if ((i + j) % 2 == 0) {
@@ -53,20 +50,15 @@ public class BoardPanel extends JPanel implements BoardObserver {
                 } else {
                     tiles[i][j].setBackground(DARK);
                 }
-                Field field = board.getFields()[i][j];
-                switch (field) {
-                    case BLACK_MAN -> {
-                        tiles[i][j].setPiece(new Piece(PieceShapeFactory.getBlackMan()));
-                        tiles[i][j].setEnabled(game.getCurrentTurn() == Turn.BLACK);
-                    }
-                    case WHITE_MAN -> {
-                        tiles[i][j].setPiece(new Piece(PieceShapeFactory.getWhiteMan()));
-                        tiles[i][j].setEnabled(game.getCurrentTurn() == Turn.WHITE);
-                    }
-                    case EMPTY -> {
-                        tiles[i][j].removePiece();
-                        tiles[i][j].setEnabled(false);
-                    }
+                if (fields[i][j].isEmpty()) {
+                    tiles[i][j].removePiece();
+                    tiles[i][j].setEnabled(false);
+                } else if (fields[i][j].getPlayer() == Player.BLACK) {
+                    tiles[i][j].setPiece(new Piece(PieceShapeFactory.getBlackMan()));
+                    tiles[i][j].setEnabled(game.getCurrentTurn() == Player.BLACK);
+                } else if (fields[i][j].getPlayer() == Player.WHITE) {
+                    tiles[i][j].setPiece(new Piece(PieceShapeFactory.getWhiteMan()));
+                    tiles[i][j].setEnabled(game.getCurrentTurn() == Player.WHITE);
                 }
             }
         }

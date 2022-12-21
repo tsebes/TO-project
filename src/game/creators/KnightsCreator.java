@@ -2,8 +2,10 @@ package game.creators;
 
 import game.Board;
 import game.BoardGame;
+import game.Field;
 import game.KnightsGame;
-import game.enums.Field;
+import game.enums.Piece;
+import game.enums.Player;
 
 import static game.Board.TILE_COUNT;
 
@@ -17,11 +19,11 @@ public class KnightsCreator implements GameCreator {
         Field[][] fields = new Field[TILE_COUNT][TILE_COUNT];
         for (int i = 0; i < TILE_COUNT; i++) {
             for (int j = 0; j < TILE_COUNT; j++) {
-                fields[i][j] = game.enums.Field.EMPTY;
+                fields[i][j] = new Field();
                 if (i < 2) {
-                    fields[i][j] = game.enums.Field.BLACK_MAN;
+                    fields[i][j] = new Field(Player.BLACK, Piece.MAN);
                 } else if (i > 5) {
-                    fields[i][j] = game.enums.Field.WHITE_MAN;
+                    fields[i][j] = new Field(Player.WHITE, Piece.MAN);
                 }
             }
         }

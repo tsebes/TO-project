@@ -2,7 +2,7 @@ package game;
 
 import game.commands.CommandHistory;
 import game.commands.Move;
-import game.enums.Turn;
+import game.enums.Player;
 import gui.BoardObserver;
 
 import java.util.HashSet;
@@ -14,15 +14,15 @@ public abstract class BoardGame implements Observable {
     protected final Set<Coordinates> possibleMoves = new HashSet<>();
     protected final CommandHistory commandHistory = new CommandHistory();
     protected final Board board;
-    protected Turn currentTurn;
+    protected Player currentTurn;
 
     public BoardGame(Board board) {
         this.board = board;
-        currentTurn = Turn.WHITE;
+        currentTurn = Player.WHITE;
     }
 
     protected void changeTurn() {
-        currentTurn = (currentTurn == Turn.WHITE) ? Turn.BLACK : Turn.WHITE;
+        currentTurn = (currentTurn == Player.WHITE) ? Player.BLACK : Player.WHITE;
     }
 
     public abstract void updatePossibleMoves(Coordinates piece);
@@ -56,7 +56,7 @@ public abstract class BoardGame implements Observable {
         return board;
     }
 
-    public Turn getCurrentTurn() {
+    public Player getCurrentTurn() {
         return currentTurn;
     }
 

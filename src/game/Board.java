@@ -1,7 +1,5 @@
 package game;
 
-import game.enums.Field;
-
 public class Board {
 
     public static final int TILE_COUNT = 8;

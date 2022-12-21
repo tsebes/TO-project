@@ -2,7 +2,7 @@ package game.commands;
 
 import game.Board;
 import game.Coordinates;
-import game.enums.Field;
+import game.Field;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,7 +36,7 @@ public class Move implements Command {
     public void execute() {
         Field[][] fields = board.getFields();
         piece = fields[start.x()][start.y()];
-        fields[start.x()][start.y()] = Field.EMPTY;
+        fields[start.x()][start.y()] = new Field();
         fields[end.x()][end.y()] = piece;
         history.push(this);
     }
@@ -46,6 +46,6 @@ public class Move implements Command {
         // TODO odtworzenie zbitego pionka
         Field[][] fields = board.getFields();
         fields[start.x()][start.y()] = piece;
-        fields[end.x()][end.y()] = Field.EMPTY;
+        fields[end.x()][end.y()] = new Field();
     }
 }
