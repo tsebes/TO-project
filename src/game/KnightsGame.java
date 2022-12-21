@@ -1,6 +1,12 @@
 package game;
 
+import game.enums.Piece;
+
+import java.util.HashSet;
+import java.util.Set;
+
 public class KnightsGame extends BoardGame {
+    private Coordinates lastPlace = new Coordinates(0,0);
 
     public KnightsGame(Board board) {
         super(board);
@@ -10,18 +16,55 @@ public class KnightsGame extends BoardGame {
     @Override
     public void updatePossibleMoves(Coordinates piece) {
         possibleMoves.clear();
-        // TODO
-        possibleMoves.add(new Coordinates(piece.x() - 1, piece.y()));
+        if(!board.isMultipleTake()){
+            possibleMoves.addAll(basicMoves(piece));
+        }
+        possibleMoves.addAll(jumpMoves(piece));
+        lastPlace = piece;
         notifyBoardObservers();
     }
+
+    private Set<Coordinates> basicMoves(Coordinates piece) {
+        Set<Coordinates> possibleBasic = new HashSet<>();
+        if (piece.x() > 0 && board.getField(new Coordinates(piece.x() - 1, piece.y())).isEmpty()) {
+            possibleBasic.add(new Coordinates(piece.x() - 1, piece.y()));
+        }
+        if (piece.x() < board.TILE_COUNT - 1 && board.getField(new Coordinates(piece.x() + 1, piece.y())).isEmpty()) {
+            possibleBasic.add(new Coordinates(piece.x() + 1, piece.y()));
+        }
+        if (piece.y() > 0 && board.getField(new Coordinates(piece.x(), piece.y()- 1)).isEmpty()) {
+            possibleBasic.add(new Coordinates(piece.x(), piece.y()- 1));
+        }
+        if (piece.y() < board.TILE_COUNT - 1 && board.getField(new Coordinates(piece.x(), piece.y() + 1)).isEmpty()) {
+            possibleBasic.add(new Coordinates(piece.x(), piece.y() + 1));
+        }
+        return possibleBasic;
+    }
+
+    private Set<Coordinates> jumpMoves(Coordinates piece) {
+        Set<Coordinates> possibleJump = new HashSet<>();
+        if (piece.x() > 1 && board.getField(new Coordinates(piece.x() - 1, piece.y())).getPiece() == Piece.MAN && board.getField(new Coordinates(piece.x() - 2, piece.y())).isEmpty() && (lastPlace.x() != piece.x() - 2 || lastPlace.y() != piece.y())){
+            possibleJump.add(new Coordinates(piece.x() - 2, piece.y()));
+        }
+        if (piece.x() < board.TILE_COUNT - 2 && board.getField(new Coordinates(piece.x() + 1, piece.y())).getPiece() == Piece.MAN && board.getField(new Coordinates(piece.x() + 2, piece.y())).isEmpty() && (lastPlace.x() != piece.x() + 2 || lastPlace.y() != piece.y())){
+            possibleJump.add(new Coordinates(piece.x() + 2, piece.y()));
+        }
+        if (piece.y() > 1 && board.getField(new Coordinates(piece.x(), piece.y() - 1)).getPiece() == Piece.MAN && board.getField(new Coordinates(piece.x(), piece.y() - 2)).isEmpty() && (lastPlace.x() != piece.x()|| lastPlace.y() != piece.y() - 2)){
+            possibleJump.add(new Coordinates(piece.x(), piece.y() - 2));
+        }
+        if (piece.y() < board.TILE_COUNT - 2 && board.getField(new Coordinates(piece.x(), piece.y() + 1)).getPiece() == Piece.MAN && board.getField(new Coordinates(piece.x(), piece.y() + 2)).isEmpty() && (lastPlace.x() != piece.x()|| lastPlace.y() != piece.y() + 2)){
+            possibleJump.add(new Coordinates(piece.x(), piece.y() + 2));
+        }
+        return possibleJump;
+    }
+
     @Override
     public boolean canJump(Coordinates piece) {
-        //TODO
-        return false;
+        return ((jumpMoves(piece)).size() > 0);
     }
 
     @Override
     public boolean jumped(Coordinates start, Coordinates end) {
-        return Math.abs(start.x() - end.x()) > 1 && Math.abs(start.y() - end.y()) > 1;
+        return Math.abs(start.x() - end.x()) > 1 || Math.abs(start.y() - end.y()) > 1;
     }
 }

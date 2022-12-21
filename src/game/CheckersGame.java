@@ -16,7 +16,6 @@ public class CheckersGame extends BoardGame {
     @Override
     public void updatePossibleMoves(Coordinates piece) {
         possibleMoves.clear();
-        // TODO add all possible moves
         if(!board.isMultipleTake()){
             possibleMoves.addAll(basicMoves(piece));
         }

@@ -32,7 +32,8 @@ public abstract class BoardGame implements Observable {
     public abstract boolean jumped(Coordinates start, Coordinates end);
 
     public Set<Coordinates> getTaken(Coordinates start, Coordinates end){
-        return null;
+        Set<Coordinates> taken = new HashSet<>();
+        return taken;
     }
 
 
