@@ -45,7 +45,6 @@ public class ControlPanel extends JPanel {
         leave.setBounds(60, 480, 100, 50);
         add(leave);
         leave.addActionListener(e -> {
-            RunGame.clean();
             guiObserver.update(GUI.Panel.Menu);
         });
     }
