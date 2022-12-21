@@ -27,10 +27,28 @@ public abstract class BoardGame implements Observable {
 
     public abstract void updatePossibleMoves(Coordinates piece);
 
+    public abstract boolean canJump(Coordinates piece);
+
+    public abstract boolean jumped(Coordinates start, Coordinates end);
+
+    public Set<Coordinates> getTaken(Coordinates start, Coordinates end){
+        return null;
+    }
+
+
     public void move(Coordinates start, Coordinates end) {
-        Move moveCommand = new Move(commandHistory, board, start, end);
+        boolean jumpingMove = jumped(start, end);
+        Move moveCommand = new Move(commandHistory, board, start, end, this.getTaken(start, end));
         moveCommand.execute();
-        changeTurn();
+        if(jumpingMove){
+            board.setMultipleTake(this.canJump(end));
+        }else{
+            board.setMultipleTake(false);
+        }
+        if(!board.isMultipleTake()){
+            changeTurn();
+        }
+        board.setCurrent(end);
         possibleMoves.clear();
         notifyBoardObservers();
     }

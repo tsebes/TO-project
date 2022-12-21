@@ -45,11 +45,13 @@ public class BoardPanel extends JPanel implements BoardObserver {
         Field[][] fields = board.getFields();
         for (int i = 0; i < TILE_COUNT; i++) {
             for (int j = 0; j < TILE_COUNT; j++) {
+                tiles[i][j].setEnabled(true);
                 if ((i + j) % 2 == 0) {
                     tiles[i][j].setBackground(LIGHT);
                 } else {
                     tiles[i][j].setBackground(DARK);
                 }
+                tiles[i][j].setEnabled(false);
                 if (fields[i][j].isEmpty()) {
                     tiles[i][j].removePiece();
                     tiles[i][j].setEnabled(false);
@@ -61,6 +63,14 @@ public class BoardPanel extends JPanel implements BoardObserver {
                     tiles[i][j].setEnabled(game.getCurrentTurn() == Player.WHITE);
                 }
             }
+        }
+        if(board.isMultipleTake()){
+            for (int i = 0; i < TILE_COUNT; i++) {
+                for (int j = 0; j < TILE_COUNT; j++) {
+                    tiles[i][j].setEnabled(false);
+                }
+            }
+            tiles[board.getCurrent().x()][board.getCurrent().y()].setEnabled(true);
         }
         showPossibleMoves();
     }

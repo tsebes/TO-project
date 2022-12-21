@@ -14,5 +14,14 @@ public class KnightsGame extends BoardGame {
         possibleMoves.add(new Coordinates(piece.x() - 1, piece.y()));
         notifyBoardObservers();
     }
+    @Override
+    public boolean canJump(Coordinates piece) {
+        //TODO
+        return false;
+    }
 
+    @Override
+    public boolean jumped(Coordinates start, Coordinates end) {
+        return Math.abs(start.x() - end.x()) > 1 && Math.abs(start.y() - end.y()) > 1;
+    }
 }
