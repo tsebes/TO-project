@@ -1,6 +1,7 @@
 package game;
 
 import game.enums.Piece;
+import game.enums.Player;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -67,4 +68,15 @@ public class KnightsGame extends BoardGame {
     public boolean jumped(Coordinates start, Coordinates end) {
         return Math.abs(start.x() - end.x()) > 1 || Math.abs(start.y() - end.y()) > 1;
     }
+
+    @Override
+    public boolean isMovePossible(Coordinates piece) {
+        return false;
+    }
+
+    @Override
+    public boolean isJumpPossible(Coordinates piece) {
+        return false;
+    }
+
 }
