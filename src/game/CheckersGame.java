@@ -1,11 +1,7 @@
 package game;
 
 
-import game.enums.Piece;
 import game.enums.Player;
-import gui.GUI;
-import gui.GUIObserver;
-import gui.MenuPanel;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -42,7 +38,7 @@ public class CheckersGame extends BoardGame {
     private Set<Coordinates> basicMoves(Coordinates piece) {
         Set<Coordinates> possibleBasic = new HashSet<>();
         switch (board.getField(piece).getPiece()) {
-            case KING -> {
+            case MAN -> {
                 if (board.getField(piece).getPlayer() == Player.WHITE) {
                     if (piece.x() > 0 && piece.y() < board.TILE_COUNT - 1 && board.getField(new Coordinates(piece.x() - 1, piece.y() + 1)).isEmpty()) {
                         possibleBasic.add(new Coordinates(piece.x() - 1, piece.y() + 1));
@@ -59,7 +55,7 @@ public class CheckersGame extends BoardGame {
                     }
                 }
             }
-            case MAN -> {
+            case KING -> {
 
                 for (int i = 1; i < board.TILE_COUNT; i++) {
                     if (piece.x() - i >= 0 && piece.y() + i < board.TILE_COUNT && board.getField(new Coordinates(piece.x() - i, piece.y() + i)).isEmpty()) {
@@ -83,7 +79,7 @@ public class CheckersGame extends BoardGame {
     private Set<Coordinates> jumpMoves(Coordinates piece) {
         Set<Coordinates> possibleJump = new HashSet<>();
         switch (board.getField(piece).getPiece()) {
-            case KING -> {
+            case MAN -> {
                 if (board.getField(piece).getPlayer() == Player.WHITE) {
                     if (piece.x() > 1 && piece.y() < board.TILE_COUNT - 2 && board.getField(new Coordinates(piece.x() - 1, piece.y() + 1)).getPlayer() == Player.BLACK && board.getField(new Coordinates(piece.x() - 2, piece.y() + 2)).isEmpty()) {
                         possibleJump.add(new Coordinates(piece.x() - 2, piece.y() + 2));
@@ -117,7 +113,7 @@ public class CheckersGame extends BoardGame {
                 }
 
             }
-            case MAN -> {
+            case KING -> {
                 List<Coordinates> opponents = new ArrayList<>();
                 for (int i = 1; i < board.TILE_COUNT; i++) {
                     if (piece.x() - i >= 0 && piece.y() + i < board.TILE_COUNT && board.getField(new Coordinates(piece.x() - i, piece.y() + i)).getPlayer() != currentTurn && board.getField(new Coordinates(piece.x() - i, piece.y() + i)).isEmpty() == false) {

@@ -4,18 +4,10 @@ import game.Board;
 import game.Coordinates;
 import game.Field;
 import game.State;
-import game.enums.Piece;
+import game.enums.PieceEnum;
 import game.enums.Player;
-import gui.BoardObserver;
-import gui.BoardPanel;
-import gui.boardcomponents.PieceShapeFactory;
-import gui.boardcomponents.PieceShapeKing;
-import gui.boardcomponents.Tile;
 
-import java.awt.*;
 import java.util.Set;
-
-import static game.Board.TILE_COUNT;
 
 public class Move extends State implements Command {
 
@@ -59,10 +51,10 @@ public class Move extends State implements Command {
     @Override
     public void becomeKing() {
         Field[][] fields = board.getFields();
-        if(piece.getPiece() == Piece.MAN && end.x() == 0 && piece.getPlayer() == Player.WHITE){
-            fields[end.x()][end.y()] = new Field(Player.WHITE, Piece.KING);
-        }else if(piece.getPiece() == Piece.MAN && end.x() == 7 && piece.getPlayer() == Player.BLACK){
-            fields[end.x()][end.y()] = new Field(Player.BLACK, Piece.KING);
+        if(piece.getPiece() == PieceEnum.MAN && end.x() == 0 && piece.getPlayer() == Player.WHITE){
+            fields[end.x()][end.y()] = new Field(Player.WHITE, PieceEnum.KING);
+        }else if(piece.getPiece() == PieceEnum.MAN && end.x() == 7 && piece.getPlayer() == Player.BLACK){
+            fields[end.x()][end.y()] = new Field(Player.BLACK, PieceEnum.KING);
         }
     }
 }

@@ -1,7 +1,6 @@
 package game;
 
-import game.enums.Piece;
-import game.enums.Player;
+import game.enums.PieceEnum;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -44,16 +43,16 @@ public class KnightsGame extends BoardGame {
 
     private Set<Coordinates> jumpMoves(Coordinates piece) {
         Set<Coordinates> possibleJump = new HashSet<>();
-        if (piece.x() > 1 && board.getField(new Coordinates(piece.x() - 1, piece.y())).getPiece() == Piece.MAN && board.getField(new Coordinates(piece.x() - 2, piece.y())).isEmpty() && (lastPlace.x() != piece.x() - 2 || lastPlace.y() != piece.y())){
+        if (piece.x() > 1 && board.getField(new Coordinates(piece.x() - 1, piece.y())).getPiece() == PieceEnum.MAN && board.getField(new Coordinates(piece.x() - 2, piece.y())).isEmpty() && (lastPlace.x() != piece.x() - 2 || lastPlace.y() != piece.y())){
             possibleJump.add(new Coordinates(piece.x() - 2, piece.y()));
         }
-        if (piece.x() < board.TILE_COUNT - 2 && board.getField(new Coordinates(piece.x() + 1, piece.y())).getPiece() == Piece.MAN && board.getField(new Coordinates(piece.x() + 2, piece.y())).isEmpty() && (lastPlace.x() != piece.x() + 2 || lastPlace.y() != piece.y())){
+        if (piece.x() < board.TILE_COUNT - 2 && board.getField(new Coordinates(piece.x() + 1, piece.y())).getPiece() == PieceEnum.MAN && board.getField(new Coordinates(piece.x() + 2, piece.y())).isEmpty() && (lastPlace.x() != piece.x() + 2 || lastPlace.y() != piece.y())){
             possibleJump.add(new Coordinates(piece.x() + 2, piece.y()));
         }
-        if (piece.y() > 1 && board.getField(new Coordinates(piece.x(), piece.y() - 1)).getPiece() == Piece.MAN && board.getField(new Coordinates(piece.x(), piece.y() - 2)).isEmpty() && (lastPlace.x() != piece.x()|| lastPlace.y() != piece.y() - 2)){
+        if (piece.y() > 1 && board.getField(new Coordinates(piece.x(), piece.y() - 1)).getPiece() == PieceEnum.MAN && board.getField(new Coordinates(piece.x(), piece.y() - 2)).isEmpty() && (lastPlace.x() != piece.x()|| lastPlace.y() != piece.y() - 2)){
             possibleJump.add(new Coordinates(piece.x(), piece.y() - 2));
         }
-        if (piece.y() < board.TILE_COUNT - 2 && board.getField(new Coordinates(piece.x(), piece.y() + 1)).getPiece() == Piece.MAN && board.getField(new Coordinates(piece.x(), piece.y() + 2)).isEmpty() && (lastPlace.x() != piece.x()|| lastPlace.y() != piece.y() + 2)){
+        if (piece.y() < board.TILE_COUNT - 2 && board.getField(new Coordinates(piece.x(), piece.y() + 1)).getPiece() == PieceEnum.MAN && board.getField(new Coordinates(piece.x(), piece.y() + 2)).isEmpty() && (lastPlace.x() != piece.x()|| lastPlace.y() != piece.y() + 2)){
             possibleJump.add(new Coordinates(piece.x(), piece.y() + 2));
         }
         return possibleJump;
