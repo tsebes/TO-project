@@ -9,8 +9,6 @@ import java.util.List;
 import java.util.Set;
 
 public class CheckersGame extends BoardGame {
-    private int whitePieces = 12;
-    private int blackPieces = 12;
 
     public CheckersGame(Board board) {
         super(board);
@@ -23,15 +21,9 @@ public class CheckersGame extends BoardGame {
         if(isJumpMovePossible(currentTurn)){
             possibleMoves.addAll(jumpMoves(piece));
             notifyBoardObservers();
-            setPieces(currentTurn);
-            checkWin();
         } else if (isMovePossible(piece)) {
             possibleMoves.addAll(basicMoves(piece));
             notifyBoardObservers();
-        } else {
-            setWhenNoMoves(currentTurn);
-            System.out.println("No moves possible");
-            checkWin();
         }
     }
 
@@ -60,16 +52,27 @@ public class CheckersGame extends BoardGame {
                 for (int i = 1; i < board.TILE_COUNT; i++) {
                     if (piece.x() - i >= 0 && piece.y() + i < board.TILE_COUNT && board.getField(new Coordinates(piece.x() - i, piece.y() + i)).isEmpty()) {
                         possibleBasic.add(new Coordinates(piece.x() - i, piece.y() + i));
-                    }
+                    } else
+                        break;
+                }
+                for (int i = 1; i < board.TILE_COUNT; i++) {
                     if (piece.x() - i >= 0 && piece.y() - i >= 0 && board.getField(new Coordinates(piece.x() - i, piece.y() - i)).isEmpty()) {
                         possibleBasic.add(new Coordinates(piece.x() - i, piece.y() - i));
-                    }
+                    } else
+                        break;
+                }
+                for (int i = 1; i < board.TILE_COUNT; i++) {
                     if (piece.x() + i < board.TILE_COUNT && piece.y() + i < board.TILE_COUNT && board.getField(new Coordinates(piece.x() + i, piece.y() + i)).isEmpty()) {
                         possibleBasic.add(new Coordinates(piece.x() + i, piece.y() + i));
-                    }
+                    } else
+                        break;
+                }
+                for (int i = 1; i < board.TILE_COUNT; i++) {
                     if (piece.x() + i < board.TILE_COUNT && piece.y() - i >= 0 && board.getField(new Coordinates(piece.x() + i, piece.y() - i)).isEmpty()) {
                         possibleBasic.add(new Coordinates(piece.x() + i, piece.y() - i));
                     }
+                    else
+                        break;
                 }
             }
         }
@@ -118,33 +121,38 @@ public class CheckersGame extends BoardGame {
                 for (int i = 1; i < board.TILE_COUNT; i++) {
                     if (piece.x() - i >= 0 && piece.y() + i < board.TILE_COUNT && board.getField(new Coordinates(piece.x() - i, piece.y() + i)).getPlayer() != currentTurn && board.getField(new Coordinates(piece.x() - i, piece.y() + i)).isEmpty() == false) {
                         opponents.add(new Coordinates(piece.x() - i, piece.y() + i));
-                    }
 
-                    for (Coordinates opponent : opponents) {
-                        for(int j = 1;opponent.x() - j >= 0 && opponent.y() + j < board.TILE_COUNT&& opponent.y() + j >= 0 && opponent.x() - j <board.TILE_COUNT;j++){
-                            if (opponent.x() - j >= 0 && opponent.y() + j < board.TILE_COUNT && board.getField(new Coordinates(opponent.x() - j, opponent.y() + j)).isEmpty()) {
-                                possibleJump.add(new Coordinates(opponent.x() - j, opponent.y() + j));
+                        for (Coordinates opponent : opponents) {
+                            for (int j = 1; opponent.x() - j >= 0 && opponent.y() + j < board.TILE_COUNT && opponent.y() + j >= 0 && opponent.x() - j < board.TILE_COUNT; j++) {
+                                if (opponent.x() - j >= 0 && opponent.y() + j < board.TILE_COUNT && board.getField(new Coordinates(opponent.x() - j, opponent.y() + j)).isEmpty()) {
+                                    possibleJump.add(new Coordinates(opponent.x() - j, opponent.y() + j));
+                                } else
+                                    break;
                             }
-                            else
-                                break;
                         }
+                        break;
                     }
+                    else if(piece.x() - i >= 0 && piece.y() + i < board.TILE_COUNT && board.getField(new Coordinates(piece.x() - i, piece.y() + i)).getPlayer() == currentTurn)
+                        break;
                 }
 
                 for(int i = 1; i < board.TILE_COUNT; i++) {
                     opponents.clear();
                     if (piece.x() - i >= 0 && piece.y() - i >= 0 && board.getField(new Coordinates(piece.x() - i, piece.y() - i)).getPlayer() != currentTurn && board.getField(new Coordinates(piece.x() - i, piece.y() - i)).isEmpty() == false) {
                         opponents.add(new Coordinates(piece.x() - i, piece.y() - i));
-                    }
+
                     for (Coordinates opponent : opponents) {
-                        for(int j = 1;opponent.x() - j >= 0 && opponent.y() - j < board.TILE_COUNT&& opponent.y() - j >= 0 && opponent.x() - j <board.TILE_COUNT;j++){
+                        for (int j = 1; opponent.x() - j >= 0 && opponent.y() - j < board.TILE_COUNT && opponent.y() - j >= 0 && opponent.x() - j < board.TILE_COUNT; j++) {
                             if (opponent.x() - j >= 0 && opponent.y() - j < board.TILE_COUNT && board.getField(new Coordinates(opponent.x() - j, opponent.y() - j)).isEmpty()) {
                                 possibleJump.add(new Coordinates(opponent.x() - j, opponent.y() - j));
-                            }
-                            else
+                            } else
                                 break;
                         }
                     }
+                    break;
+                }
+                    else if(piece.x() - i >= 0 && piece.y() - i >= 0 && board.getField(new Coordinates(piece.x() - i, piece.y() - i)).getPlayer() == currentTurn)
+                        break;
                 }
 
                 for(int i = 1; i < board.TILE_COUNT; i++) {
@@ -152,31 +160,38 @@ public class CheckersGame extends BoardGame {
 
                     if (piece.x() + i < board.TILE_COUNT && piece.y() + i < board.TILE_COUNT && board.getField(new Coordinates(piece.x() + i, piece.y() + i)).getPlayer() != currentTurn && board.getField(new Coordinates(piece.x() + i, piece.y() + i)).isEmpty() == false) {
                         opponents.add(new Coordinates(piece.x() + i, piece.y() + i));
-                    }
+
                     for (Coordinates opponent : opponents) {
-                        for(int j=1;opponent.x() + j >= 0 && opponent.y() + j < board.TILE_COUNT;j++){
-                            if (opponent.x() + j >= 0 && opponent.y() + j < board.TILE_COUNT&& opponent.y() + j >= 0 && opponent.x() + j <board.TILE_COUNT && board.getField(new Coordinates(opponent.x() + j, opponent.y() + j)).isEmpty()) {
+                        for (int j = 1; opponent.x() + j >= 0 && opponent.y() + j < board.TILE_COUNT; j++) {
+                            if (opponent.x() + j >= 0 && opponent.y() + j < board.TILE_COUNT && opponent.y() + j >= 0 && opponent.x() + j < board.TILE_COUNT && board.getField(new Coordinates(opponent.x() + j, opponent.y() + j)).isEmpty()) {
                                 possibleJump.add(new Coordinates(opponent.x() + j, opponent.y() + j));
-                            }
-                            else
+                            } else
                                 break;
                         }
                     }
+                    break;
                 }
+                    else if(piece.x() + i < board.TILE_COUNT && piece.y() + i < board.TILE_COUNT && board.getField(new Coordinates(piece.x() + i, piece.y() + i)).getPlayer() == currentTurn)
+                        break;
+                }
+
                 for(int i = 1; i < board.TILE_COUNT; i++) {
                     opponents.clear();
                     if (piece.x() + i < board.TILE_COUNT && piece.y() - i >= 0 && board.getField(new Coordinates(piece.x() + i, piece.y() - i)).getPlayer() != currentTurn && board.getField(new Coordinates(piece.x() + i, piece.y() - i)).isEmpty() == false) {
                         opponents.add(new Coordinates(piece.x() + i, piece.y() - i));
-                    }
+
                     for (Coordinates opponent : opponents) {
-                        for(int j = 1;opponent.x() + j >= 0 && opponent.y() - j < board.TILE_COUNT && opponent.y() - j >= 0 && opponent.x() + j <board.TILE_COUNT ;j++){
+                        for (int j = 1; opponent.x() + j >= 0 && opponent.y() - j < board.TILE_COUNT && opponent.y() - j >= 0 && opponent.x() + j < board.TILE_COUNT; j++) {
                             if (opponent.x() + j >= 0 && opponent.y() - j < board.TILE_COUNT && board.getField(new Coordinates(opponent.x() + j, opponent.y() - j)).isEmpty()) {
                                 possibleJump.add(new Coordinates(opponent.x() + j, opponent.y() - j));
-                            }
-                            else
+                            } else
                                 break;
                         }
                     }
+                    break;
+                }
+                else if(piece.x() + i < board.TILE_COUNT && piece.y() - i >= 0 && board.getField(new Coordinates(piece.x() + i, piece.y() - i)).getPlayer() == currentTurn)
+                    break;
                 }
             }
         }
@@ -210,46 +225,48 @@ public class CheckersGame extends BoardGame {
             return true;
     }
 
-    private int getWhitePieces() {
-        return whitePieces;
-    }
-    private int getBlackPieces() {
-        return blackPieces;
-    }
-
-
-    private void setPieces(Player player){
-        if(player == Player.WHITE){
-            whitePieces--;
-        }else{
-            blackPieces--;
-        }
-    }
-    private void setWhenNoMoves(Player player){
-        if(player == Player.WHITE){
-            whitePieces = 0;
-        }else{
-            blackPieces = 0;
-        }
-    }
-
-    private void checkWin(){
-        if(getWhitePieces() == 0){
-            System.out.println("Black win");
-            //zmień panel na menu
-
-        }
-        if(getBlackPieces() == 0){
-            System.out.println("White win");
-            //zmień panel na menu
-        }
-    }
 
     @Override
     public Set<Coordinates> getTaken(Coordinates start, Coordinates end) {
         Set<Coordinates> takenPieces = new HashSet<>();
         Coordinates temp;
+        int xAxis = Math.abs(start.x() - end.x());
+        int yAxis = Math.abs(start.y() - end.y());
+        int j = 1;
+        if(xAxis > yAxis){
+            j=xAxis;
+        }
+        else
+            j = yAxis;
 
+        for(int i = 1; i< j; i++){
+            if(end.x() > start.x() && end.y() > start.y()){
+                temp = new Coordinates(start.x() + i, start.y() + i);
+                if(board.getField(temp).getPlayer() != currentTurn && board.getField(temp).isEmpty() == false){
+                    takenPieces.add(temp);
+                }
+            }
+            if(end.x() > start.x() && end.y() < start.y()){
+                temp = new Coordinates(start.x() + i, start.y() - i);
+                if(board.getField(temp).getPlayer() != currentTurn && board.getField(temp).isEmpty() == false){
+                    takenPieces.add(temp);
+                }
+            }
+            if(end.x() < start.x() && end.y() > start.y()){
+                temp = new Coordinates(start.x() - i, start.y() + i);
+                if(board.getField(temp).getPlayer() != currentTurn && board.getField(temp).isEmpty() == false){
+                    takenPieces.add(temp);
+                }
+            }
+            if(end.x() < start.x() && end.y() < start.y()){
+                temp = new Coordinates(start.x() - i, start.y() - i);
+                if(board.getField(temp).getPlayer() != currentTurn && board.getField(temp).isEmpty() == false){
+                    takenPieces.add(temp);
+                }
+            }
+        }
+
+        /*
         for(int i = 1; i < Math.abs(end.x() - start.x()); i+=1){
             if(start.x() > end.x()){
                 if(start.y() > end.y()){
@@ -267,7 +284,7 @@ public class CheckersGame extends BoardGame {
             if(!board.getField(temp).isEmpty()){
                 takenPieces.add(temp);
             }
-        }
+        }*/
         return takenPieces;
     }
 
