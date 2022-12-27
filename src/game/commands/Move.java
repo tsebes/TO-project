@@ -3,10 +3,21 @@ package game.commands;
 import game.Board;
 import game.Coordinates;
 import game.Field;
+import game.State;
+import game.enums.Piece;
+import game.enums.Player;
+import gui.BoardObserver;
+import gui.BoardPanel;
+import gui.boardcomponents.PieceShapeFactory;
+import gui.boardcomponents.PieceShapeKing;
+import gui.boardcomponents.Tile;
 
+import java.awt.*;
 import java.util.Set;
 
-public class Move implements Command {
+import static game.Board.TILE_COUNT;
+
+public class Move extends State implements Command {
 
     private final CommandHistory history;
     private final Board board;
@@ -16,6 +27,7 @@ public class Move implements Command {
     private Field piece;
 
     public Move(CommandHistory history, Board board, Coordinates start, Coordinates end, Set<Coordinates> taken) {
+        super(board.getField(end).getPiece());
         this.history = history;
         this.board = board;
         this.start = start;
@@ -29,6 +41,7 @@ public class Move implements Command {
         piece = fields[start.x()][start.y()];
         fields[start.x()][start.y()] = new Field();
         fields[end.x()][end.y()] = piece;
+        becomeKing();
         for(Coordinates coordinates: taken){
             fields[coordinates.x()][coordinates.y()] = new Field();
         }
@@ -41,5 +54,15 @@ public class Move implements Command {
         Field[][] fields = board.getFields();
         fields[start.x()][start.y()] = piece;
         fields[end.x()][end.y()] = new Field();
+    }
+
+    @Override
+    public void becomeKing() {
+        Field[][] fields = board.getFields();
+        if(piece.getPiece() == Piece.MAN && end.x() == 0 && piece.getPlayer() == Player.WHITE){
+            fields[end.x()][end.y()] = new Field(Player.WHITE, Piece.KING);
+        }else if(piece.getPiece() == Piece.MAN && end.x() == 7 && piece.getPlayer() == Player.BLACK){
+            fields[end.x()][end.y()] = new Field(Player.BLACK, Piece.KING);
+        }
     }
 }
