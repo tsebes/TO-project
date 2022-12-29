@@ -1,15 +1,14 @@
 package game;
 
-import game.enums.PieceEnum;
+import game.enums.PieceType;
 
 public abstract class State {
-    protected PieceEnum pieceEnum;
+    protected PieceType pieceType;
 
-    public State(PieceEnum pieceEnum) {
-        this.pieceEnum = pieceEnum;
+    public State(PieceType pieceType) {
+        this.pieceType = pieceType;
     }
 
     public abstract void becomeKing();
-
 
 }

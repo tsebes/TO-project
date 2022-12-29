@@ -35,23 +35,52 @@ public abstract class BoardGame implements Observable {
 
     public abstract boolean isJumpPossible(Coordinates piece);
 
+    public Set<Coordinates> getTaken(Coordinates start, Coordinates end) {
+        Set<Coordinates> takenPieces = new HashSet<>();
+        Coordinates temp;
+        int xAxis = Math.abs(start.x() - end.x());
+        int yAxis = Math.abs(start.y() - end.y());
+        int j = Math.max(xAxis, yAxis);
 
-    public Set<Coordinates> getTaken(Coordinates start, Coordinates end){
-        Set<Coordinates> taken = new HashSet<>();
-        return taken;
+        for (int i = 1; i < j; i++) {
+            if (end.x() > start.x() && end.y() > start.y()) {
+                temp = new Coordinates(start.x() + i, start.y() + i);
+                if (board.getField(temp).getPlayer() != currentTurn && !board.getField(temp).isEmpty()) {
+                    takenPieces.add(temp);
+                }
+            }
+            if (end.x() > start.x() && end.y() < start.y()) {
+                temp = new Coordinates(start.x() + i, start.y() - i);
+                if (board.getField(temp).getPlayer() != currentTurn && !board.getField(temp).isEmpty()) {
+                    takenPieces.add(temp);
+                }
+            }
+            if (end.x() < start.x() && end.y() > start.y()) {
+                temp = new Coordinates(start.x() - i, start.y() + i);
+                if (board.getField(temp).getPlayer() != currentTurn && !board.getField(temp).isEmpty()) {
+                    takenPieces.add(temp);
+                }
+            }
+            if (end.x() < start.x() && end.y() < start.y()) {
+                temp = new Coordinates(start.x() - i, start.y() - i);
+                if (board.getField(temp).getPlayer() != currentTurn && !board.getField(temp).isEmpty()) {
+                    takenPieces.add(temp);
+                }
+            }
+        }
+        return takenPieces;
     }
-
 
     public void move(Coordinates start, Coordinates end) {
         boolean jumpingMove = jumped(start, end);
-        Move moveCommand = new Move(commandHistory, board, start, end, this.getTaken(start, end));
+        Move moveCommand = new Move(commandHistory, board, start, end, getTaken(start, end));
         moveCommand.execute();
-        if(jumpingMove){
+        if (jumpingMove) {
             board.setMultipleTake(this.canJump(end));
-        }else{
+        } else {
             board.setMultipleTake(false);
         }
-        if(!board.isMultipleTake()){
+        if (!board.isMultipleTake()) {
             changeTurn();
         }
         board.setCurrent(end);

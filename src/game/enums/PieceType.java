@@ -1,6 +1,6 @@
 package game.enums;
 
-public enum PieceEnum {
+public enum PieceType {
     MAN,
     KING
 }
