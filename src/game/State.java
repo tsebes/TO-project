@@ -1,15 +1,15 @@
 package game;
 
 import game.enums.PieceEnum;
+import game.enums.Player;
 
-public abstract class State {
-    protected PieceEnum pieceEnum;
+import java.util.Set;
 
-    public State(PieceEnum pieceEnum) {
-        this.pieceEnum = pieceEnum;
-    }
+public interface State {
 
-    public abstract void becomeKing();
 
+    public abstract Set<Coordinates> getPossibleMoves(Coordinates piece);
+
+    public abstract Set<Coordinates> getPossibleJumps(Coordinates piece);
 
 }

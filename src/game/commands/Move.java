@@ -9,7 +9,7 @@ import game.enums.Player;
 
 import java.util.Set;
 
-public class Move extends State implements Command {
+public class Move implements Command {
 
     private final CommandHistory history;
     private final Board board;
@@ -19,7 +19,6 @@ public class Move extends State implements Command {
     private Field piece;
 
     public Move(CommandHistory history, Board board, Coordinates start, Coordinates end, Set<Coordinates> taken) {
-        super(board.getField(end).getPiece());
         this.history = history;
         this.board = board;
         this.start = start;
@@ -48,7 +47,6 @@ public class Move extends State implements Command {
         fields[end.x()][end.y()] = new Field();
     }
 
-    @Override
     public void becomeKing() {
         Field[][] fields = board.getFields();
         if(piece.getPiece() == PieceEnum.MAN && end.x() == 0 && piece.getPlayer() == Player.WHITE){
