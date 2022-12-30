@@ -4,7 +4,7 @@ import game.Board;
 import game.BoardGame;
 import game.CheckersGame;
 import game.Field;
-import game.enums.PieceEnum;
+import game.enums.PieceType;
 import game.enums.Player;
 
 import static game.Board.TILE_COUNT;
@@ -22,9 +22,9 @@ public class CheckersCreator implements GameCreator {
                 fields[i][j] = new Field();
                 if ((i + j) % 2 != 0) {
                     if (i < 3) {
-                        fields[i][j] = new Field(Player.BLACK, PieceEnum.MAN);
+                        fields[i][j] = new Field(Player.BLACK, PieceType.MAN);
                     } else if (i > 4) {
-                        fields[i][j] = new Field(Player.WHITE, PieceEnum.MAN);
+                        fields[i][j] = new Field(Player.WHITE, PieceType.MAN);
                     }
                 }
             }

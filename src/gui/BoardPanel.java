@@ -1,10 +1,8 @@
 package gui;
 
 import game.*;
-import game.enums.PieceEnum;
+import game.enums.PieceType;
 import game.enums.Player;
-import game.enums.PieceEnum;
-
 import gui.boardcomponents.Piece;
 import gui.boardcomponents.PieceShapeFactory;
 import gui.boardcomponents.Tile;
@@ -22,7 +20,6 @@ public class BoardPanel extends JPanel implements BoardObserver {
     private static final Color CAN_BE_CHOSEN = new Color(150, 150, 150);
 
     private final Tile[][] tiles = new Tile[TILE_COUNT][TILE_COUNT];
-    private Piece piece;
 
     private Coordinates lastClicked;
 
@@ -59,24 +56,22 @@ public class BoardPanel extends JPanel implements BoardObserver {
                 if (fields[i][j].isEmpty()) {
                     tiles[i][j].removePiece();
                     tiles[i][j].setEnabled(false);
-                } else if (fields[i][j].getPlayer() == Player.BLACK && fields[i][j].getPiece() == PieceEnum.MAN) {
+                } else if (fields[i][j].getPlayer() == Player.BLACK && fields[i][j].getPiece() == PieceType.MAN) {
                     tiles[i][j].setPiece(new Piece(PieceShapeFactory.getBlackMan()));
                     tiles[i][j].setEnabled(game.getCurrentTurn() == Player.BLACK);
-                } else if (fields[i][j].getPlayer() == Player.WHITE && fields[i][j].getPiece() == PieceEnum.MAN) {
+                } else if (fields[i][j].getPlayer() == Player.WHITE && fields[i][j].getPiece() == PieceType.MAN) {
                     tiles[i][j].setPiece(new Piece(PieceShapeFactory.getWhiteMan()));
                     tiles[i][j].setEnabled(game.getCurrentTurn() == Player.WHITE);
-                }
-                else if(fields[i][j].getPlayer() == Player.BLACK && fields[i][j].getPiece() == PieceEnum.KING){
+                } else if (fields[i][j].getPlayer() == Player.BLACK && fields[i][j].getPiece() == PieceType.KING) {
                     tiles[i][j].setPiece(new Piece(PieceShapeFactory.getBlackKing()));
                     tiles[i][j].setEnabled(game.getCurrentTurn() == Player.BLACK);
-                }
-                else if(fields[i][j].getPlayer() == Player.WHITE && fields[i][j].getPiece() == PieceEnum.KING){
+                } else if (fields[i][j].getPlayer() == Player.WHITE && fields[i][j].getPiece() == PieceType.KING) {
                     tiles[i][j].setPiece(new Piece(PieceShapeFactory.getWhiteKing()));
                     tiles[i][j].setEnabled(game.getCurrentTurn() == Player.WHITE);
                 }
             }
         }
-        if(board.isMultipleTake()){
+        if (board.isMultipleTake()) {
             for (int i = 0; i < TILE_COUNT; i++) {
                 for (int j = 0; j < TILE_COUNT; j++) {
                     tiles[i][j].setEnabled(false);

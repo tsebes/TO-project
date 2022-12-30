@@ -10,11 +10,6 @@ public class RunGame {
     private RunGame() {
     }
 
-    // nie ma potrzeby usuwania całej instancji
-    public static void clean() {
-        instance = null;
-    }
-
     public static RunGame getInstance() {
         if (instance == null) {
             synchronized (RunGame.class) {
