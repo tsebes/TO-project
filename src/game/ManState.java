@@ -1,14 +1,12 @@
 package game;
 
-import game.enums.PieceEnum;
 import game.enums.Player;
 
 import java.util.HashSet;
 import java.util.Set;
 
 public class ManState implements State {
-    //private Player player;
-    //private PieceEnum pieceEnum;
+
     private Board board;
 
     public ManState(Board board) {

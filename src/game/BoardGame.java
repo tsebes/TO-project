@@ -113,7 +113,7 @@ public abstract class BoardGame implements Observable {
         return currentTurn;
     }
 
-    /*public Set<Coordinates> getPossibleMoves() {
+    public Set<Coordinates> getPossibleMoves() {
         return possibleMoves;
-    }*/
+    }
 }
