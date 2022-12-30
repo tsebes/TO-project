@@ -8,7 +8,6 @@ import java.util.Set;
 import static game.Board.TILE_COUNT;
 
 public class KnightsGame extends BoardGame {
-    private Coordinates lastPlace = new Coordinates(0, 0);
 
     public KnightsGame(Board board) {
         super(board);
@@ -18,12 +17,21 @@ public class KnightsGame extends BoardGame {
     @Override
     public void updatePossibleMoves(Coordinates piece) {
         possibleMoves.clear();
-        if (!board.isMultipleTake()) {
-            possibleMoves.addAll(basicMoves(piece));
-        }
+        possibleMoves.addAll(basicMoves(piece));
         possibleMoves.addAll(jumpMoves(piece));
-        lastPlace = piece;
+        for(Coordinates place : jumpMoves(piece)){
+            addMultipleJumps(place);
+        }
         notifyBoardObservers();
+    }
+
+    private void addMultipleJumps(Coordinates piece){
+        for(Coordinates place : jumpMoves(piece)){
+            if(!possibleMoves.contains(place)){
+                possibleMoves.add(place);
+                addMultipleJumps(place);
+            }
+        }
     }
 
     private Set<Coordinates> basicMoves(Coordinates piece) {
@@ -45,16 +53,16 @@ public class KnightsGame extends BoardGame {
 
     private Set<Coordinates> jumpMoves(Coordinates piece) {
         Set<Coordinates> possibleJump = new HashSet<>();
-        if (piece.x() > 1 && board.getField(new Coordinates(piece.x() - 1, piece.y())).getPiece() == PieceType.MAN && board.getField(new Coordinates(piece.x() - 2, piece.y())).isEmpty() && (lastPlace.x() != piece.x() - 2 || lastPlace.y() != piece.y())) {
+        if (piece.x() > 1 && board.getField(new Coordinates(piece.x() - 1, piece.y())).getPiece() == PieceType.MAN && board.getField(new Coordinates(piece.x() - 2, piece.y())).isEmpty()) {
             possibleJump.add(new Coordinates(piece.x() - 2, piece.y()));
         }
-        if (piece.x() < TILE_COUNT - 2 && board.getField(new Coordinates(piece.x() + 1, piece.y())).getPiece() == PieceType.MAN && board.getField(new Coordinates(piece.x() + 2, piece.y())).isEmpty() && (lastPlace.x() != piece.x() + 2 || lastPlace.y() != piece.y())) {
+        if (piece.x() < TILE_COUNT - 2 && board.getField(new Coordinates(piece.x() + 1, piece.y())).getPiece() == PieceType.MAN && board.getField(new Coordinates(piece.x() + 2, piece.y())).isEmpty()) {
             possibleJump.add(new Coordinates(piece.x() + 2, piece.y()));
         }
-        if (piece.y() > 1 && board.getField(new Coordinates(piece.x(), piece.y() - 1)).getPiece() == PieceType.MAN && board.getField(new Coordinates(piece.x(), piece.y() - 2)).isEmpty() && (lastPlace.x() != piece.x() || lastPlace.y() != piece.y() - 2)) {
+        if (piece.y() > 1 && board.getField(new Coordinates(piece.x(), piece.y() - 1)).getPiece() == PieceType.MAN && board.getField(new Coordinates(piece.x(), piece.y() - 2)).isEmpty()) {
             possibleJump.add(new Coordinates(piece.x(), piece.y() - 2));
         }
-        if (piece.y() < TILE_COUNT - 2 && board.getField(new Coordinates(piece.x(), piece.y() + 1)).getPiece() == PieceType.MAN && board.getField(new Coordinates(piece.x(), piece.y() + 2)).isEmpty() && (lastPlace.x() != piece.x() || lastPlace.y() != piece.y() + 2)) {
+        if (piece.y() < TILE_COUNT - 2 && board.getField(new Coordinates(piece.x(), piece.y() + 1)).getPiece() == PieceType.MAN && board.getField(new Coordinates(piece.x(), piece.y() + 2)).isEmpty()) {
             possibleJump.add(new Coordinates(piece.x(), piece.y() + 2));
         }
         return possibleJump;
@@ -67,7 +75,7 @@ public class KnightsGame extends BoardGame {
 
     @Override
     public boolean jumped(Coordinates start, Coordinates end) {
-        return Math.abs(start.x() - end.x()) > 1 || Math.abs(start.y() - end.y()) > 1;
+        return false;
     }
 
     @Override
