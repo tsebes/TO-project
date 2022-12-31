@@ -3,7 +3,6 @@ package game.commands;
 import game.Board;
 import game.Coordinates;
 import game.Field;
-import game.State;
 import game.enums.PieceType;
 import game.enums.Player;
 
