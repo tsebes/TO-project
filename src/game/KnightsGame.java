@@ -19,15 +19,15 @@ public class KnightsGame extends BoardGame {
         possibleMoves.clear();
         possibleMoves.addAll(basicMoves(piece));
         possibleMoves.addAll(jumpMoves(piece));
-        for(Coordinates place : jumpMoves(piece)){
+        for (Coordinates place : jumpMoves(piece)) {
             addMultipleJumps(place);
         }
         notifyBoardObservers();
     }
 
-    private void addMultipleJumps(Coordinates piece){
-        for(Coordinates place : jumpMoves(piece)){
-            if(!possibleMoves.contains(place)){
+    private void addMultipleJumps(Coordinates piece) {
+        for (Coordinates place : jumpMoves(piece)) {
+            if (!possibleMoves.contains(place)) {
                 possibleMoves.add(place);
                 addMultipleJumps(place);
             }
@@ -53,16 +53,16 @@ public class KnightsGame extends BoardGame {
 
     private Set<Coordinates> jumpMoves(Coordinates piece) {
         Set<Coordinates> possibleJump = new HashSet<>();
-        if (piece.x() > 1 && board.getField(new Coordinates(piece.x() - 1, piece.y())).getPiece() == PieceType.MAN && board.getField(new Coordinates(piece.x() - 2, piece.y())).isEmpty()) {
+        if (piece.x() > 1 && board.getField(new Coordinates(piece.x() - 1, piece.y())).getPieceType() == PieceType.MAN && board.getField(new Coordinates(piece.x() - 2, piece.y())).isEmpty()) {
             possibleJump.add(new Coordinates(piece.x() - 2, piece.y()));
         }
-        if (piece.x() < TILE_COUNT - 2 && board.getField(new Coordinates(piece.x() + 1, piece.y())).getPiece() == PieceType.MAN && board.getField(new Coordinates(piece.x() + 2, piece.y())).isEmpty()) {
+        if (piece.x() < TILE_COUNT - 2 && board.getField(new Coordinates(piece.x() + 1, piece.y())).getPieceType() == PieceType.MAN && board.getField(new Coordinates(piece.x() + 2, piece.y())).isEmpty()) {
             possibleJump.add(new Coordinates(piece.x() + 2, piece.y()));
         }
-        if (piece.y() > 1 && board.getField(new Coordinates(piece.x(), piece.y() - 1)).getPiece() == PieceType.MAN && board.getField(new Coordinates(piece.x(), piece.y() - 2)).isEmpty()) {
+        if (piece.y() > 1 && board.getField(new Coordinates(piece.x(), piece.y() - 1)).getPieceType() == PieceType.MAN && board.getField(new Coordinates(piece.x(), piece.y() - 2)).isEmpty()) {
             possibleJump.add(new Coordinates(piece.x(), piece.y() - 2));
         }
-        if (piece.y() < TILE_COUNT - 2 && board.getField(new Coordinates(piece.x(), piece.y() + 1)).getPiece() == PieceType.MAN && board.getField(new Coordinates(piece.x(), piece.y() + 2)).isEmpty()) {
+        if (piece.y() < TILE_COUNT - 2 && board.getField(new Coordinates(piece.x(), piece.y() + 1)).getPieceType() == PieceType.MAN && board.getField(new Coordinates(piece.x(), piece.y() + 2)).isEmpty()) {
             possibleJump.add(new Coordinates(piece.x(), piece.y() + 2));
         }
         return possibleJump;

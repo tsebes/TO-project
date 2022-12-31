@@ -1,9 +1,6 @@
 package game.creators;
 
-import game.Board;
-import game.BoardGame;
-import game.CheckersGame;
-import game.Field;
+import game.*;
 import game.enums.PieceType;
 import game.enums.Player;
 
@@ -22,9 +19,9 @@ public class CheckersCreator implements GameCreator {
                 fields[i][j] = new Field();
                 if ((i + j) % 2 != 0) {
                     if (i < 3) {
-                        fields[i][j] = new Field(Player.BLACK, PieceType.MAN);
+                        fields[i][j].setPiece(new Piece(Player.BLACK, PieceType.MAN));
                     } else if (i > 4) {
-                        fields[i][j] = new Field(Player.WHITE, PieceType.MAN);
+                        fields[i][j].setPiece(new Piece(Player.WHITE, PieceType.MAN));
                     }
                 }
             }

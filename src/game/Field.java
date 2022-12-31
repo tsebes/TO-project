@@ -5,29 +5,37 @@ import game.enums.Player;
 
 public class Field {
 
-    private final Player player;
-    private final PieceType pieceType;
+    private Piece piece;
 
     public Field() {
-        this.player = null;
-        this.pieceType = null;
     }
 
-    public Field(Player player, PieceType pieceType) {
-        this.player = player;
-        this.pieceType = pieceType;
+    public Field(Piece piece) {
+        this.piece = piece;
+    }
+
+    public void removePiece() {
+        piece = null;
     }
 
     public boolean isEmpty() {
-        return player == null || pieceType == null;
+        return piece == null;
+    }
+
+    public Piece getPiece() {
+        return piece;
+    }
+
+    public void setPiece(Piece piece) {
+        this.piece = piece;
     }
 
     public Player getPlayer() {
-        return player;
+        return piece == null ? null : piece.getPlayer();
     }
 
-    public PieceType getPiece() {
-        return pieceType;
+    public PieceType getPieceType() {
+        return piece == null ? null : piece.getPieceType();
     }
 
 }

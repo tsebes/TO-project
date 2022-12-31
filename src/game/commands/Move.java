@@ -3,6 +3,7 @@ package game.commands;
 import game.Board;
 import game.Coordinates;
 import game.Field;
+import game.Piece;
 import game.enums.PieceType;
 import game.enums.Player;
 
@@ -29,11 +30,11 @@ public class Move implements Command {
     public void execute() {
         Field[][] fields = board.getFields();
         piece = fields[start.x()][start.y()];
-        fields[start.x()][start.y()] = new Field();
+        fields[start.x()][start.y()].removePiece();
         fields[end.x()][end.y()] = piece;
         becomeKing();
         for (Coordinates coordinates : taken) {
-            fields[coordinates.x()][coordinates.y()] = new Field();
+            fields[coordinates.x()][coordinates.y()].removePiece();
         }
         history.push(this);
     }
@@ -43,15 +44,15 @@ public class Move implements Command {
         // TODO odtworzenie zbitego pionka
         Field[][] fields = board.getFields();
         fields[start.x()][start.y()] = piece;
-        fields[end.x()][end.y()] = new Field();
+        fields[end.x()][end.y()].removePiece();
     }
 
     public void becomeKing() {
         Field[][] fields = board.getFields();
-        if (piece.getPiece() == PieceType.MAN && end.x() == 0 && piece.getPlayer() == Player.WHITE) {
-            fields[end.x()][end.y()] = new Field(Player.WHITE, PieceType.KING);
-        } else if (piece.getPiece() == PieceType.MAN && end.x() == 7 && piece.getPlayer() == Player.BLACK) {
-            fields[end.x()][end.y()] = new Field(Player.BLACK, PieceType.KING);
+        if (piece.getPieceType() == PieceType.MAN && end.x() == 0 && piece.getPlayer() == Player.WHITE) {
+            fields[end.x()][end.y()].setPiece(new Piece(Player.WHITE, PieceType.KING));
+        } else if (piece.getPieceType() == PieceType.MAN && end.x() == 7 && piece.getPlayer() == Player.BLACK) {
+            fields[end.x()][end.y()].setPiece(new Piece(Player.BLACK, PieceType.KING));
         }
     }
 }
