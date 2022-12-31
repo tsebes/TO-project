@@ -16,7 +16,7 @@ public class Move implements Command {
     private final Coordinates start;
     private final Coordinates end;
     private final Set<Coordinates> taken;
-    private Field piece;
+    private Piece piece;
 
     public Move(CommandHistory history, Board board, Coordinates start, Coordinates end, Set<Coordinates> taken) {
         this.history = history;
@@ -29,9 +29,9 @@ public class Move implements Command {
     @Override
     public void execute() {
         Field[][] fields = board.getFields();
-        piece = fields[start.x()][start.y()];
+        piece = fields[start.x()][start.y()].getPiece();
         fields[start.x()][start.y()].removePiece();
-        fields[end.x()][end.y()] = piece;
+        fields[end.x()][end.y()].setPiece(piece);
         becomeKing();
         for (Coordinates coordinates : taken) {
             fields[coordinates.x()][coordinates.y()].removePiece();
@@ -43,7 +43,7 @@ public class Move implements Command {
     public void undo() {
         // TODO odtworzenie zbitego pionka
         Field[][] fields = board.getFields();
-        fields[start.x()][start.y()] = piece;
+        fields[start.x()][start.y()].setPiece(piece);
         fields[end.x()][end.y()].removePiece();
     }
 
