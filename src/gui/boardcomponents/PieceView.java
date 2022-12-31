@@ -2,11 +2,11 @@ package gui.boardcomponents;
 
 import java.awt.*;
 
-public class Piece {
+public class PieceView {
 
     private final Shape shape;
 
-    public Piece(Shape shape) {
+    public PieceView(Shape shape) {
         this.shape = shape;
     }
 
