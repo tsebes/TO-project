@@ -27,15 +27,15 @@ public abstract class BoardGame implements Observable {
 
     public abstract void updatePossibleMoves(Coordinates piece);
 
-    public abstract boolean canJump(Coordinates piece);
+    protected abstract boolean canJump(Coordinates piece);
 
-    public abstract boolean jumped(Coordinates start, Coordinates end);
+    protected abstract boolean jumped(Coordinates start, Coordinates end);
 
-    public abstract boolean isMovePossible(Coordinates piece);
+    protected abstract boolean isMovePossible(Coordinates piece);
 
-    public abstract boolean isJumpPossible(Coordinates piece);
+    protected abstract boolean isJumpPossible(Coordinates piece);
 
-    public Set<Coordinates> getTaken(Coordinates start, Coordinates end) {
+    protected Set<Coordinates> getTaken(Coordinates start, Coordinates end) {
         Set<Coordinates> takenPieces = new HashSet<>();
         Coordinates temp;
         int xAxis = Math.abs(start.x() - end.x());

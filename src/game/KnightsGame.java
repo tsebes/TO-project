@@ -69,22 +69,22 @@ public class KnightsGame extends BoardGame {
     }
 
     @Override
-    public boolean canJump(Coordinates piece) {
+    protected boolean canJump(Coordinates piece) {
         return ((jumpMoves(piece)).size() > 0);
     }
 
     @Override
-    public boolean jumped(Coordinates start, Coordinates end) {
+    protected boolean jumped(Coordinates start, Coordinates end) {
         return false;
     }
 
     @Override
-    public boolean isMovePossible(Coordinates piece) {
+    protected boolean isMovePossible(Coordinates piece) {
         return false;
     }
 
     @Override
-    public boolean isJumpPossible(Coordinates piece) {
+    protected boolean isJumpPossible(Coordinates piece) {
         return false;
     }
 
