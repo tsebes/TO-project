@@ -1,14 +1,10 @@
 package game;
 
-import game.enums.PieceType;
 import game.enums.Player;
 
 import java.util.Set;
 
-public class CheckersGame extends BoardGame implements State {
-
-    private KingState kingState;
-    private ManState manState;
+public class CheckersGame extends BoardGame {
 
     public CheckersGame(Board board) {
         super(board);
@@ -27,7 +23,7 @@ public class CheckersGame extends BoardGame implements State {
         }
     }
 
-    public boolean isJumpMovePossible(Player player) {
+    protected boolean isJumpMovePossible(Player player) {
         for (int i = 0; i < Board.TILE_COUNT; i++) {
             for (int j = 0; j < Board.TILE_COUNT; j++) {
                 if (board.getField(new Coordinates(i, j)).getPlayer() == player) {
@@ -40,42 +36,31 @@ public class CheckersGame extends BoardGame implements State {
         return false;
     }
 
-    public boolean isJumpPossible(Coordinates piece) {
+    protected boolean isJumpPossible(Coordinates piece) {
         return !getPossibleJumps(piece).isEmpty();
     }
 
     @Override
-    public boolean isMovePossible(Coordinates piece) {
+    protected boolean isMovePossible(Coordinates piece) {
         return !getPossibleMoves(piece).isEmpty();
     }
 
     @Override
-    public boolean canJump(Coordinates piece) {
+    protected boolean canJump(Coordinates piece) {
         return ((getPossibleJumps(piece)).size() > 0);
     }
 
     @Override
-    public boolean jumped(Coordinates start, Coordinates end) {
+    protected boolean jumped(Coordinates start, Coordinates end) {
         return (getTaken(start, end).size() > 0);
     }
 
-    @Override
-    public Set<Coordinates> getPossibleMoves(Coordinates piece) {
-        if (board.getField(piece).getPiece() == PieceType.MAN) {
-            manState = new ManState(board);
-            return manState.getPossibleMoves(piece);
-        } else
-            kingState = new KingState(board, currentTurn);
-        return kingState.getPossibleMoves(piece);
+    private Set<Coordinates> getPossibleMoves(Coordinates piece) {
+        return board.getField(piece).getPiece().getPossibleMoves(board, piece);
     }
 
-    @Override
-    public Set<Coordinates> getPossibleJumps(Coordinates piece) {
-        if (board.getField(piece).getPiece() == PieceType.MAN) {
-            manState = new ManState(board);
-            return manState.getPossibleJumps(piece);
-        } else
-            kingState = new KingState(board, currentTurn);
-        return kingState.getPossibleJumps(piece);
+    private Set<Coordinates> getPossibleJumps(Coordinates piece) {
+        return board.getField(piece).getPiece().getPossibleJumps(board, piece);
     }
+
 }

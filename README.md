@@ -20,4 +20,4 @@ Wzorce projektowe:
 5. Polecenie - możliwość cofnięcia ruchu
 6. Obserwator - aktualizacja planszy
 7. Singleton - zapisywanie ruchów do pliku
-8. Stan - pionek może zmienić się w królówkę
+8. Strategia - pionek może zmienić się w królówkę

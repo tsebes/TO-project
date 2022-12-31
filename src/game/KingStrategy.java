@@ -7,19 +7,12 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class KingState implements State {
-
-    private final Board board;
-    private final Player currentTurn;
-
-    public KingState(Board board, Player player) {
-        this.board = board;
-        this.currentTurn = player;
-    }
+public class KingStrategy implements Strategy {
 
     @Override
-    public Set<Coordinates> getPossibleMoves(Coordinates piece) {
+    public Set<Coordinates> getPossibleMoves(Board board, Coordinates piece) {
         Set<Coordinates> possibleBasic = new HashSet<>();
+
         for (int i = 1; i < Board.TILE_COUNT; i++) {
             if (piece.x() - i >= 0 && piece.y() + i < Board.TILE_COUNT && board.getField(new Coordinates(piece.x() - i, piece.y() + i)).isEmpty()) {
                 possibleBasic.add(new Coordinates(piece.x() - i, piece.y() + i));
@@ -49,11 +42,13 @@ public class KingState implements State {
 
 
     @Override
-    public Set<Coordinates> getPossibleJumps(Coordinates piece) {
+    public Set<Coordinates> getPossibleJumps(Board board, Coordinates piece) {
         Set<Coordinates> possibleJump = new HashSet<>();
         List<Coordinates> opponents = new ArrayList<>();
+        Player currentPlayer = board.getField(piece).getPlayer();
+
         for (int i = 1; i < Board.TILE_COUNT; i++) {
-            if (piece.x() - i >= 0 && piece.y() + i < Board.TILE_COUNT && board.getField(new Coordinates(piece.x() - i, piece.y() + i)).getPlayer() != currentTurn && !board.getField(new Coordinates(piece.x() - i, piece.y() + i)).isEmpty()) {
+            if (piece.x() - i >= 0 && piece.y() + i < Board.TILE_COUNT && board.getField(new Coordinates(piece.x() - i, piece.y() + i)).getPlayer() != currentPlayer && !board.getField(new Coordinates(piece.x() - i, piece.y() + i)).isEmpty()) {
                 opponents.add(new Coordinates(piece.x() - i, piece.y() + i));
 
                 for (Coordinates opponent : opponents) {
@@ -65,13 +60,13 @@ public class KingState implements State {
                     }
                 }
                 break;
-            } else if (piece.x() - i >= 0 && piece.y() + i < Board.TILE_COUNT && board.getField(new Coordinates(piece.x() - i, piece.y() + i)).getPlayer() == currentTurn)
+            } else if (piece.x() - i >= 0 && piece.y() + i < Board.TILE_COUNT && board.getField(new Coordinates(piece.x() - i, piece.y() + i)).getPlayer() == currentPlayer)
                 break;
         }
 
         for (int i = 1; i < Board.TILE_COUNT; i++) {
             opponents.clear();
-            if (piece.x() - i >= 0 && piece.y() - i >= 0 && board.getField(new Coordinates(piece.x() - i, piece.y() - i)).getPlayer() != currentTurn && !board.getField(new Coordinates(piece.x() - i, piece.y() - i)).isEmpty()) {
+            if (piece.x() - i >= 0 && piece.y() - i >= 0 && board.getField(new Coordinates(piece.x() - i, piece.y() - i)).getPlayer() != currentPlayer && !board.getField(new Coordinates(piece.x() - i, piece.y() - i)).isEmpty()) {
                 opponents.add(new Coordinates(piece.x() - i, piece.y() - i));
 
                 for (Coordinates opponent : opponents) {
@@ -83,14 +78,14 @@ public class KingState implements State {
                     }
                 }
                 break;
-            } else if (piece.x() - i >= 0 && piece.y() - i >= 0 && board.getField(new Coordinates(piece.x() - i, piece.y() - i)).getPlayer() == currentTurn)
+            } else if (piece.x() - i >= 0 && piece.y() - i >= 0 && board.getField(new Coordinates(piece.x() - i, piece.y() - i)).getPlayer() == currentPlayer)
                 break;
         }
 
         for (int i = 1; i < Board.TILE_COUNT; i++) {
             opponents.clear();
 
-            if (piece.x() + i < Board.TILE_COUNT && piece.y() + i < Board.TILE_COUNT && board.getField(new Coordinates(piece.x() + i, piece.y() + i)).getPlayer() != currentTurn && !board.getField(new Coordinates(piece.x() + i, piece.y() + i)).isEmpty()) {
+            if (piece.x() + i < Board.TILE_COUNT && piece.y() + i < Board.TILE_COUNT && board.getField(new Coordinates(piece.x() + i, piece.y() + i)).getPlayer() != currentPlayer && !board.getField(new Coordinates(piece.x() + i, piece.y() + i)).isEmpty()) {
                 opponents.add(new Coordinates(piece.x() + i, piece.y() + i));
 
                 for (Coordinates opponent : opponents) {
@@ -102,13 +97,13 @@ public class KingState implements State {
                     }
                 }
                 break;
-            } else if (piece.x() + i < Board.TILE_COUNT && piece.y() + i < Board.TILE_COUNT && board.getField(new Coordinates(piece.x() + i, piece.y() + i)).getPlayer() == currentTurn)
+            } else if (piece.x() + i < Board.TILE_COUNT && piece.y() + i < Board.TILE_COUNT && board.getField(new Coordinates(piece.x() + i, piece.y() + i)).getPlayer() == currentPlayer)
                 break;
         }
 
         for (int i = 1; i < Board.TILE_COUNT; i++) {
             opponents.clear();
-            if (piece.x() + i < Board.TILE_COUNT && piece.y() - i >= 0 && board.getField(new Coordinates(piece.x() + i, piece.y() - i)).getPlayer() != currentTurn && !board.getField(new Coordinates(piece.x() + i, piece.y() - i)).isEmpty()) {
+            if (piece.x() + i < Board.TILE_COUNT && piece.y() - i >= 0 && board.getField(new Coordinates(piece.x() + i, piece.y() - i)).getPlayer() != currentPlayer && !board.getField(new Coordinates(piece.x() + i, piece.y() - i)).isEmpty()) {
                 opponents.add(new Coordinates(piece.x() + i, piece.y() - i));
 
                 for (Coordinates opponent : opponents) {
@@ -120,7 +115,7 @@ public class KingState implements State {
                     }
                 }
                 break;
-            } else if (piece.x() + i < Board.TILE_COUNT && piece.y() - i >= 0 && board.getField(new Coordinates(piece.x() + i, piece.y() - i)).getPlayer() == currentTurn)
+            } else if (piece.x() + i < Board.TILE_COUNT && piece.y() - i >= 0 && board.getField(new Coordinates(piece.x() + i, piece.y() - i)).getPlayer() == currentPlayer)
                 break;
         }
         return possibleJump;

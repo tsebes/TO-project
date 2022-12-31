@@ -5,16 +5,10 @@ import game.enums.Player;
 import java.util.HashSet;
 import java.util.Set;
 
-public class ManState implements State {
-
-    private final Board board;
-
-    public ManState(Board board) {
-        this.board = board;
-    }
+public class ManStrategy implements Strategy {
 
     @Override
-    public Set<Coordinates> getPossibleMoves(Coordinates piece) {
+    public Set<Coordinates> getPossibleMoves(Board board, Coordinates piece) {
         Set<Coordinates> possibleBasic = new HashSet<>();
 
         if (board.getField(piece).getPlayer() == Player.WHITE) {
@@ -36,8 +30,9 @@ public class ManState implements State {
     }
 
     @Override
-    public Set<Coordinates> getPossibleJumps(Coordinates piece) {
+    public Set<Coordinates> getPossibleJumps(Board board, Coordinates piece) {
         Set<Coordinates> possibleJump = new HashSet<>();
+
         if (board.getField(piece).getPlayer() == Player.WHITE) {
             if (piece.x() > 1 && piece.y() < Board.TILE_COUNT - 2 && board.getField(new Coordinates(piece.x() - 1, piece.y() + 1)).getPlayer() == Player.BLACK && board.getField(new Coordinates(piece.x() - 2, piece.y() + 2)).isEmpty()) {
                 possibleJump.add(new Coordinates(piece.x() - 2, piece.y() + 2));
