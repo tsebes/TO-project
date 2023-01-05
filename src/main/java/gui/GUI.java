@@ -6,10 +6,11 @@ public class GUI extends JFrame implements GUIObserver {
 
     private final MenuPanel menuPanel;
     private final GamePanel gamePanel;
+    private final BoardPanel boardPanel = new BoardPanel();
 
     public GUI() {
         menuPanel = new MenuPanel(this);
-        gamePanel = new GamePanel(new BoardPanel(), new ControlPanel(this));
+        gamePanel = new GamePanel(boardPanel, new ControlPanel(this, boardPanel));
 
         configureFrame();
         setVisible(true);

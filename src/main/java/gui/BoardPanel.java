@@ -23,7 +23,7 @@ public class BoardPanel extends JPanel implements BoardObserver {
 
     private Coordinates lastClicked;
 
-    private BoardGame game;
+    public BoardGame game;
     private Board board;
 
     public BoardPanel() {

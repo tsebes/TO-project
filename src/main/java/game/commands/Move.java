@@ -37,14 +37,7 @@ public class Move implements Command {
             fields[coordinates.x()][coordinates.y()].removePiece();
         }
         history.push(this);
-    }
-
-    @Override
-    public void undo() {
-        // TODO odtworzenie zbitego pionka
-        Field[][] fields = board.getFields();
-        fields[start.x()][start.y()].setPiece(piece);
-        fields[end.x()][end.y()].removePiece();
+        SaveCommands.getInstance().saveHistory( this);
     }
 
     public void becomeKing() {

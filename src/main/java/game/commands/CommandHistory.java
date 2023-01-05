@@ -14,4 +14,7 @@ public class CommandHistory {
         return history.pop();
     }
 
+    public Command peek() {
+        return history.peek();
+    }
 }

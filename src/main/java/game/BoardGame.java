@@ -2,6 +2,9 @@ package game;
 
 import game.commands.CommandHistory;
 import game.commands.Move;
+import game.commands.Redo;
+import game.commands.Undo;
+import game.enums.PieceType;
 import game.enums.Player;
 import gui.BoardObserver;
 
@@ -13,8 +16,12 @@ public abstract class BoardGame implements Observable {
     protected final Set<BoardObserver> observers = new HashSet<>();
     protected final Set<Coordinates> possibleMoves = new HashSet<>();
     protected final CommandHistory commandHistory = new CommandHistory();
+    Set<Coordinates> takenPieces = new HashSet<>();
+    Set<Coordinates> startCoordinates = new HashSet<>();
+    Set<Coordinates> endCoordinates = new HashSet<>();
     protected final Board board;
     protected Player currentTurn;
+    private PieceType takenType;
 
     public BoardGame(Board board) {
         this.board = board;
@@ -43,24 +50,28 @@ public abstract class BoardGame implements Observable {
                 temp = new Coordinates(start.x() + i, start.y() + i);
                 if (board.getField(temp).getPlayer() != currentTurn && !board.getField(temp).isEmpty()) {
                     takenPieces.add(temp);
+                    takenType = board.getField(temp).getPieceType();
                 }
             }
             if (end.x() > start.x() && end.y() < start.y()) {
                 temp = new Coordinates(start.x() + i, start.y() - i);
                 if (board.getField(temp).getPlayer() != currentTurn && !board.getField(temp).isEmpty()) {
                     takenPieces.add(temp);
+                    takenType = board.getField(temp).getPieceType();
                 }
             }
             if (end.x() < start.x() && end.y() > start.y()) {
                 temp = new Coordinates(start.x() - i, start.y() + i);
                 if (board.getField(temp).getPlayer() != currentTurn && !board.getField(temp).isEmpty()) {
                     takenPieces.add(temp);
+                    takenType = board.getField(temp).getPieceType();
                 }
             }
             if (end.x() < start.x() && end.y() < start.y()) {
                 temp = new Coordinates(start.x() - i, start.y() - i);
                 if (board.getField(temp).getPlayer() != currentTurn && !board.getField(temp).isEmpty()) {
                     takenPieces.add(temp);
+                    takenType = board.getField(temp).getPieceType();
                 }
             }
         }
@@ -69,6 +80,14 @@ public abstract class BoardGame implements Observable {
 
     public void move(Coordinates start, Coordinates end) {
         boolean jumpingMove = jumped(start, end);
+        startCoordinates.removeAll(startCoordinates);
+        endCoordinates.removeAll(endCoordinates);
+        startCoordinates.add(start);
+        endCoordinates.add(end);
+        takenPieces.removeAll(takenPieces);
+        if (jumpingMove) {
+            takenPieces = getTaken(start, end);
+        }
         Move moveCommand = new Move(commandHistory, board, start, end, getTaken(start, end));
         moveCommand.execute();
         if (jumpingMove) {
@@ -82,6 +101,26 @@ public abstract class BoardGame implements Observable {
         board.setCurrent(end);
         possibleMoves.clear();
         notifyBoardObservers();
+    }
+
+    public void undo() {
+        Undo undoCommand = new Undo(commandHistory, board, getLast(startCoordinates), getLast(endCoordinates), getLast(takenPieces), takenType);
+        undoCommand.execute();
+        changeTurn();
+        notifyBoardObservers();
+    }
+
+    public void redo() {
+        Redo redoCommand = new Redo(commandHistory, this, getLast(startCoordinates), getLast(endCoordinates));
+        redoCommand.execute();
+    }
+
+    public Coordinates getLast(Set<Coordinates> set) {
+        Coordinates last = null;
+        for (Coordinates c : set) {
+            last = c;
+        }
+        return last;
     }
 
     @Override
