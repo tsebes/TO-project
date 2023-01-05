@@ -78,14 +78,4 @@ public class KnightsGame extends BoardGame {
         return false;
     }
 
-    @Override
-    protected boolean isMovePossible(Coordinates piece) {
-        return false;
-    }
-
-    @Override
-    protected boolean isJumpPossible(Coordinates piece) {
-        return false;
-    }
-
 }

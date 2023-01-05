@@ -14,7 +14,7 @@ public abstract class BoardGame implements Observable {
     protected final Set<Coordinates> possibleMoves = new HashSet<>();
     protected final CommandHistory commandHistory = new CommandHistory();
     protected final Board board;
-    public Player currentTurn;
+    protected Player currentTurn;
 
     public BoardGame(Board board) {
         this.board = board;
@@ -30,10 +30,6 @@ public abstract class BoardGame implements Observable {
     protected abstract boolean canJump(Coordinates piece);
 
     protected abstract boolean jumped(Coordinates start, Coordinates end);
-
-    protected abstract boolean isMovePossible(Coordinates piece);
-
-    protected abstract boolean isJumpPossible(Coordinates piece);
 
     protected Set<Coordinates> getTaken(Coordinates start, Coordinates end) {
         Set<Coordinates> takenPieces = new HashSet<>();
@@ -76,7 +72,7 @@ public abstract class BoardGame implements Observable {
         Move moveCommand = new Move(commandHistory, board, start, end, getTaken(start, end));
         moveCommand.execute();
         if (jumpingMove) {
-            board.setMultipleTake(this.canJump(end));
+            board.setMultipleTake(canJump(end));
         } else {
             board.setMultipleTake(false);
         }

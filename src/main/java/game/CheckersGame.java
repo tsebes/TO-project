@@ -16,14 +16,13 @@ public class CheckersGame extends BoardGame {
         possibleMoves.clear();
         if (isJumpMovePossible(currentTurn)) {
             possibleMoves.addAll(getPossibleJumps(piece));
-            notifyBoardObservers();
-        } else if (isMovePossible(piece)) {
+        } else {
             possibleMoves.addAll(getPossibleMoves(piece));
-            notifyBoardObservers();
         }
+        notifyBoardObservers();
     }
 
-    protected boolean isJumpMovePossible(Player player) {
+    private boolean isJumpMovePossible(Player player) {
         for (int i = 0; i < Board.TILE_COUNT; i++) {
             for (int j = 0; j < Board.TILE_COUNT; j++) {
                 if (board.getField(new Coordinates(i, j)).getPlayer() == player) {
@@ -36,13 +35,8 @@ public class CheckersGame extends BoardGame {
         return false;
     }
 
-    protected boolean isJumpPossible(Coordinates piece) {
+    private boolean isJumpPossible(Coordinates piece) {
         return !getPossibleJumps(piece).isEmpty();
-    }
-
-    @Override
-    protected boolean isMovePossible(Coordinates piece) {
-        return !getPossibleMoves(piece).isEmpty();
     }
 
     @Override
