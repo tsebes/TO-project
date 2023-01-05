@@ -12,6 +12,7 @@ public class SaveCommands {
     public BufferedWriter writer;
 
     private SaveCommands() {
+        clearHistory();
     }
 
     public static SaveCommands getInstance() {
