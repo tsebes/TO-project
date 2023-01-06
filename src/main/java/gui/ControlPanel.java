@@ -1,23 +1,17 @@
 package gui;
 
-import game.Board;
-import game.BoardGame;
 import game.RunGame;
 import game.commands.SaveCommands;
 
 import javax.swing.*;
 import java.awt.*;
 
-public class ControlPanel extends JPanel implements BoardObserver{
+public class ControlPanel extends JPanel {
 
     private final GUIObserver guiObserver;
-    private final BoardPanel boardPanel;
-    private Board board;
-    private BoardGame game;
 
-    public ControlPanel(GUIObserver guiObserver, BoardPanel boardPanel) {
+    public ControlPanel(GUIObserver guiObserver) {
         this.guiObserver = guiObserver;
-        this.boardPanel = boardPanel;
         setPreferredSize(new Dimension(200, 640));
         setBackground(Color.GRAY);
         setLayout(null);
@@ -32,7 +26,7 @@ public class ControlPanel extends JPanel implements BoardObserver{
         undo.setBounds(60, 170, 100, 50);
         add(undo);
         undo.addActionListener(e -> {
-            boardPanel.game.undo();
+            RunGame.getInstance().getGame().undo();
         });
     }
 
@@ -42,7 +36,7 @@ public class ControlPanel extends JPanel implements BoardObserver{
         redo.setBounds(60, 250, 100, 50);
         add(redo);
         redo.addActionListener(e -> {
-            boardPanel.game.redo();
+            RunGame.getInstance().getGame().redo();
         });
     }
 
@@ -57,8 +51,4 @@ public class ControlPanel extends JPanel implements BoardObserver{
         });
     }
 
-    @Override
-    public void update() {
-        game.addBoardObserver(this);
-    }
 }

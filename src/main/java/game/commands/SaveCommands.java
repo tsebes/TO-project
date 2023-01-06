@@ -3,13 +3,11 @@ package game.commands;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.List;
 
 public class SaveCommands {
+    private static final String PATH = "src/main/java/game/commands/history.txt";
     private static volatile SaveCommands instance;
-    public BufferedWriter writer;
+    private BufferedWriter writer;
 
     private SaveCommands() {
         clearHistory();
@@ -28,7 +26,7 @@ public class SaveCommands {
 
     public void saveHistory(Command command) {
         try {
-            writer = new BufferedWriter(new FileWriter("src/main/java/game/commands/history.txt", true));
+            writer = new BufferedWriter(new FileWriter(PATH, true));
             writer.write(command.toString());
             writer.newLine();
             writer.close();
@@ -39,12 +37,12 @@ public class SaveCommands {
 
     public void clearHistory() {
         try {
-            writer = new BufferedWriter(new FileWriter("src/main/java/game/commands/history.txt", false));
+            writer = new BufferedWriter(new FileWriter(PATH, false));
             writer.write("");
             writer.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
-    }
+}
 

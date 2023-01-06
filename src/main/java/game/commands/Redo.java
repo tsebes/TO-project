@@ -19,11 +19,11 @@ public class Redo implements Command {
     @Override
     public void execute() {
         Command last = history.peek();
-        if(last.getClass().equals(Undo.class)) {
+        if (last.getClass().equals(Undo.class)) {
             game.move(start, end);
             history.pop();
             history.push(this);
-            SaveCommands.getInstance().saveHistory( this);
+            SaveCommands.getInstance().saveHistory(this);
         }
     }
 }

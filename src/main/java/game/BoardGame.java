@@ -16,11 +16,11 @@ public abstract class BoardGame implements Observable {
     protected final Set<BoardObserver> observers = new HashSet<>();
     protected final Set<Coordinates> possibleMoves = new HashSet<>();
     protected final CommandHistory commandHistory = new CommandHistory();
+    protected final Board board;
+    protected Player currentTurn;
     Set<Coordinates> takenPieces = new HashSet<>();
     Set<Coordinates> startCoordinates = new HashSet<>();
     Set<Coordinates> endCoordinates = new HashSet<>();
-    protected final Board board;
-    protected Player currentTurn;
     private PieceType takenType;
 
     public BoardGame(Board board) {
@@ -80,11 +80,11 @@ public abstract class BoardGame implements Observable {
 
     public void move(Coordinates start, Coordinates end) {
         boolean jumpingMove = jumped(start, end);
-        startCoordinates.removeAll(startCoordinates);
-        endCoordinates.removeAll(endCoordinates);
+        startCoordinates.clear();
+        endCoordinates.clear();
         startCoordinates.add(start);
         endCoordinates.add(end);
-        takenPieces.removeAll(takenPieces);
+        takenPieces.clear();
         if (jumpingMove) {
             takenPieces = getTaken(start, end);
         }

@@ -37,7 +37,7 @@ public class Move implements Command {
             fields[coordinates.x()][coordinates.y()].removePiece();
         }
         history.push(this);
-        SaveCommands.getInstance().saveHistory( this);
+        SaveCommands.getInstance().saveHistory(this);
     }
 
     public void becomeKing() {
