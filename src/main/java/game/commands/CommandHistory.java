@@ -17,4 +17,8 @@ public class CommandHistory {
     public Command peek() {
         return history.peek();
     }
+
+    public boolean isEmpty() {
+        return history.isEmpty();
+    }
 }

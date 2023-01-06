@@ -1,9 +1,8 @@
 package game;
 
-import game.commands.CommandHistory;
-import game.commands.Move;
-import game.commands.Redo;
-import game.commands.Undo;
+import game.commands.*;
+//import game.commands.Redo;
+//import game.commands.Undo;
 import game.enums.PieceType;
 import game.enums.Player;
 import gui.BoardObserver;
@@ -88,7 +87,7 @@ public abstract class BoardGame implements Observable {
         if (jumpingMove) {
             takenPieces = getTaken(start, end);
         }
-        Move moveCommand = new Move(commandHistory, board, start, end, getTaken(start, end));
+        Move moveCommand = new Move(commandHistory, board, start, end, getLast(getTaken(start, end)), takenType);
         moveCommand.execute();
         if (jumpingMove) {
             board.setMultipleTake(canJump(end));
@@ -104,15 +103,31 @@ public abstract class BoardGame implements Observable {
     }
 
     public void undo() {
-        Undo undoCommand = new Undo(commandHistory, board, getLast(startCoordinates), getLast(endCoordinates), getLast(takenPieces), takenType);
-        undoCommand.execute();
-        changeTurn();
-        notifyBoardObservers();
+        if (commandHistory.isEmpty()) {
+            return;
+        }
+        Command last = commandHistory.peek();
+        if (last.getClass().equals(Move.class)) {
+            Move move = (Move) last;
+            move.undo();
+            Undo undo = new Undo(commandHistory);
+            undo.execute();
+            changeTurn();
+            notifyBoardObservers();
+        }
     }
 
     public void redo() {
-        Redo redoCommand = new Redo(commandHistory, this, getLast(startCoordinates), getLast(endCoordinates));
-        redoCommand.execute();
+        if(commandHistory.isEmpty()) {
+            return;
+        }
+        Command last = commandHistory.peek();
+        if(last.getClass().equals(Undo.class)) {
+            move(getLast(startCoordinates), getLast(endCoordinates));
+            Redo redoCommand = new Redo(commandHistory);
+            redoCommand.execute();
+            notifyBoardObservers();
+        }
     }
 
     public Coordinates getLast(Set<Coordinates> set) {
