@@ -8,7 +8,7 @@ import static game.Board.TILE_COUNT;
 
 public class CheckersCreator implements GameCreator {
     @Override
-    public BoardGame crateGame() {
+    public BoardGame createGame() {
         return new CheckersGame(setUpBoard());
     }
 

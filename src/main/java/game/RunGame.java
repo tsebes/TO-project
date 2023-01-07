@@ -22,7 +22,7 @@ public class RunGame {
     }
 
     public void newGameWithCreator(GameCreator gameCreator) {
-        game = gameCreator.crateGame();
+        game = gameCreator.createGame();
     }
 
     public BoardGame getGame() {

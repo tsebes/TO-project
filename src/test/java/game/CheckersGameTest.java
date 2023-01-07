@@ -16,7 +16,7 @@ public class CheckersGameTest {
 
     @BeforeEach
     public void createGame() {
-        game = new CheckersCreator().crateGame();
+        game = new CheckersCreator().createGame();
     }
 
     @ParameterizedTest
