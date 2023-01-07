@@ -14,11 +14,11 @@ public class CommandHistory {
         return history.pop();
     }
 
-    public Command peek() {
-        return history.peek();
+    public boolean canUndo() {
+        return !history.isEmpty() && history.peek().getClass().equals(Move.class);
     }
 
-    public boolean isEmpty() {
-        return history.isEmpty();
+    public boolean canRedo() {
+        return !history.isEmpty() && history.peek().getClass().equals(Undo.class);
     }
 }

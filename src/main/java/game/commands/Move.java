@@ -39,32 +39,28 @@ public class Move implements Command {
             fields[takenPiece.x()][takenPiece.y()].removePiece();
 
         history.push(this);
-        SaveCommands.getInstance().saveHistory(this);
+        SaveCommands.getInstance().saveHistory(this.toString());
     }
 
-
+    @Override
     public void undo() {
-        Command last = history.peek();
-        if (last.getClass().equals(Move.class)) {
-            Field[][] fields = board.getFields();
-            piece = fields[end.x()][end.y()].getPiece();
-            if (becameKing) {
-                piece = new Piece(piece.getPlayer(), PieceType.MAN);
-            }
-            fields[start.x()][start.y()].setPiece(piece);
-            fields[end.x()][end.y()].removePiece();
+        Field[][] fields = board.getFields();
+        piece = fields[end.x()][end.y()].getPiece();
+        if (becameKing) {
+            piece = new Piece(piece.getPlayer(), PieceType.MAN);
+        }
+        fields[start.x()][start.y()].setPiece(piece);
+        fields[end.x()][end.y()].removePiece();
 
-
-            if (takenPiece != null) {
-                if (piece.getPlayer() == Player.WHITE && takenType == PieceType.MAN)
-                    fields[takenPiece.x()][takenPiece.y()].setPiece(new Piece(Player.BLACK, PieceType.MAN));
-                else if (piece.getPlayer() == Player.WHITE && takenType == PieceType.KING)
-                    fields[takenPiece.x()][takenPiece.y()].setPiece(new Piece(Player.BLACK, PieceType.KING));
-                else if (piece.getPlayer() == Player.BLACK && takenType == PieceType.KING)
-                    fields[takenPiece.x()][takenPiece.y()].setPiece(new Piece(Player.WHITE, PieceType.KING));
-                else
-                    fields[takenPiece.x()][takenPiece.y()].setPiece(new Piece(Player.WHITE, PieceType.MAN));
-            }
+        if (takenPiece != null) {
+            if (piece.getPlayer() == Player.WHITE && takenType == PieceType.MAN)
+                fields[takenPiece.x()][takenPiece.y()].setPiece(new Piece(Player.BLACK, PieceType.MAN));
+            else if (piece.getPlayer() == Player.WHITE && takenType == PieceType.KING)
+                fields[takenPiece.x()][takenPiece.y()].setPiece(new Piece(Player.BLACK, PieceType.KING));
+            else if (piece.getPlayer() == Player.BLACK && takenType == PieceType.KING)
+                fields[takenPiece.x()][takenPiece.y()].setPiece(new Piece(Player.WHITE, PieceType.KING));
+            else
+                fields[takenPiece.x()][takenPiece.y()].setPiece(new Piece(Player.WHITE, PieceType.MAN));
         }
     }
 

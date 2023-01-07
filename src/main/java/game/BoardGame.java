@@ -1,8 +1,9 @@
 package game;
 
-import game.commands.*;
-//import game.commands.Redo;
-//import game.commands.Undo;
+import game.commands.Command;
+import game.commands.CommandHistory;
+import game.commands.Move;
+import game.commands.Undo;
 import game.enums.PieceType;
 import game.enums.Player;
 import gui.BoardObserver;
@@ -87,7 +88,7 @@ public abstract class BoardGame implements Observable {
         if (jumpingMove) {
             takenPieces = getTaken(start, end);
         }
-        Move moveCommand = new Move(commandHistory, board, start, end, getLast(getTaken(start, end)), takenType);
+        Command moveCommand = new Move(commandHistory, board, start, end, getLast(getTaken(start, end)), takenType);
         moveCommand.execute();
         if (jumpingMove) {
             board.setMultipleTake(canJump(end));
@@ -103,14 +104,8 @@ public abstract class BoardGame implements Observable {
     }
 
     public void undo() {
-        if (commandHistory.isEmpty()) {
-            return;
-        }
-        Command last = commandHistory.peek();
-        if (last.getClass().equals(Move.class)) {
-            Move move = (Move) last;
-            move.undo();
-            Undo undo = new Undo(commandHistory);
+        if (commandHistory.canUndo()) {
+            Command undo = new Undo(commandHistory);
             undo.execute();
             changeTurn();
             notifyBoardObservers();
@@ -118,14 +113,10 @@ public abstract class BoardGame implements Observable {
     }
 
     public void redo() {
-        if(commandHistory.isEmpty()) {
-            return;
-        }
-        Command last = commandHistory.peek();
-        if(last.getClass().equals(Undo.class)) {
-            move(getLast(startCoordinates), getLast(endCoordinates));
-            Redo redoCommand = new Redo(commandHistory);
-            redoCommand.execute();
+        if (commandHistory.canRedo()) {
+            Command redoCommand = commandHistory.pop();
+            redoCommand.undo();
+            changeTurn();
             notifyBoardObservers();
         }
     }

@@ -24,10 +24,10 @@ public class SaveCommands {
         return instance;
     }
 
-    public void saveHistory(Command command) {
+    public void saveHistory(String message) {
         try {
             writer = new BufferedWriter(new FileWriter(PATH, true));
-            writer.write(command.toString());
+            writer.write(message);
             writer.newLine();
             writer.close();
         } catch (IOException e) {
