@@ -6,10 +6,12 @@ public class GUI extends JFrame implements GUIObserver {
 
     private final MenuPanel menuPanel;
     private final GamePanel gamePanel;
+    private final WinnerPanel winnerPanel;
 
     public GUI() {
         menuPanel = new MenuPanel(this);
-        gamePanel = new GamePanel(new BoardPanel(), new ControlPanel(this));
+        gamePanel = new GamePanel(new BoardPanel(this), new ControlPanel(this));
+        winnerPanel = new WinnerPanel(this);
 
         configureFrame();
         setVisible(true);
@@ -27,6 +29,7 @@ public class GUI extends JFrame implements GUIObserver {
     public void changePanel(Panel panel) {
         switch (panel) {
             case Menu -> {
+                winnerPanel.setVisible(false);
                 gamePanel.setVisible(false);
                 setContentPane(menuPanel);
                 pack();
@@ -39,6 +42,13 @@ public class GUI extends JFrame implements GUIObserver {
                 gamePanel.setVisible(true);
                 gamePanel.updateBoard();
             }
+            case Winner -> {
+                gamePanel.setVisible(false);
+                setContentPane(winnerPanel);
+                pack();
+                winnerPanel.setVisible(true);
+                winnerPanel.updateMessage();
+            }
         }
     }
 
@@ -49,6 +59,7 @@ public class GUI extends JFrame implements GUIObserver {
 
     public enum Panel {
         Menu,
-        Game
+        Game,
+        Winner
     }
 }

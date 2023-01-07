@@ -25,8 +25,10 @@ public class BoardPanel extends JPanel implements BoardObserver {
 
     private BoardGame game;
     private Board board;
+    private final GUIObserver guiObserver;
 
-    public BoardPanel() {
+    public BoardPanel(GUIObserver guiObserver) {
+        this.guiObserver = guiObserver;
         setPreferredSize(new Dimension(Tile.SIZE * TILE_COUNT, Tile.SIZE * TILE_COUNT));
         setLayout(new GridLayout(TILE_COUNT, TILE_COUNT));
         addTiles();
@@ -113,6 +115,11 @@ public class BoardPanel extends JPanel implements BoardObserver {
 
     @Override
     public void update() {
-        refreshTiles();
+        if(game.gameEnded()){
+            guiObserver.update(GUI.Panel.Winner);
+        }
+        else{
+            refreshTiles();
+        }
     }
 }

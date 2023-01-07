@@ -1,6 +1,7 @@
 package game;
 
 import game.enums.PieceType;
+import game.enums.Player;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -78,4 +79,29 @@ public class KnightsGame extends BoardGame {
         return false;
     }
 
+    @Override
+    public boolean gameEnded() {
+        boolean blackWin = true;
+        boolean whiteWin = true;
+
+        for (int i = 0; i < Board.TILE_COUNT; i++) {
+            for (int j = 0; j < Board.TILE_COUNT; j++) {
+                if (i < 6 && board.getField(new Coordinates(i, j)).getPlayer() == Player.BLACK){
+                    blackWin = false;
+                }
+                if (i > 1 && board.getField(new Coordinates(i, j)).getPlayer() == Player.WHITE){
+                    whiteWin = false;
+                }
+            }
+        }
+        if(blackWin){
+            winner = Player.BLACK;
+            return true;
+        }
+        if(whiteWin){
+            winner = Player.WHITE;
+            return true;
+        }
+        return false;
+    }
 }

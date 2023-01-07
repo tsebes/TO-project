@@ -57,4 +57,44 @@ public class CheckersGame extends BoardGame {
         return board.getField(piece).getPiece().getPossibleJumps(board, piece);
     }
 
+    @Override
+    public boolean gameEnded() {
+        boolean noMoves = true;
+        boolean blackWin = true;
+        boolean whiteWin = true;
+
+        for (int i = 0; i < Board.TILE_COUNT; i++) {
+            for (int j = 0; j < Board.TILE_COUNT; j++) {
+                if (board.getField(new Coordinates(i, j)).getPlayer() == currentTurn) {
+                    if(getPossibleJumps(new Coordinates(i, j)).size() > 0 || getPossibleMoves(new Coordinates(i, j)).size() > 0){
+                        noMoves = false;
+                    }
+                }
+                if (board.getField(new Coordinates(i, j)).getPlayer() == Player.WHITE) {
+                    blackWin = false;
+                }
+                if (board.getField(new Coordinates(i, j)).getPlayer() == Player.BLACK) {
+                    whiteWin = false;
+                }
+            }
+        }
+        if(blackWin){
+            winner = Player.BLACK;
+            return true;
+        }
+        if(whiteWin){
+            winner = Player.WHITE;
+            return true;
+        }
+        if(noMoves){
+            if(currentTurn == Player.WHITE){
+                winner = Player.BLACK;
+            }
+            else{
+                winner = Player.WHITE;
+            }
+            return true;
+        }
+        return false;
+    }
 }

@@ -18,6 +18,7 @@ public abstract class BoardGame implements Observable {
     protected final CommandHistory commandHistory = new CommandHistory();
     protected final Board board;
     protected Player currentTurn;
+    protected Player winner;
     private PieceType takenType;
 
     public BoardGame(Board board) {
@@ -34,6 +35,8 @@ public abstract class BoardGame implements Observable {
     protected abstract boolean canJump(Coordinates piece);
 
     protected abstract boolean jumped(Coordinates start, Coordinates end);
+
+    public abstract boolean gameEnded();
 
     protected Set<Coordinates> getTaken(Coordinates start, Coordinates end) {
         Set<Coordinates> takenPieces = new HashSet<>();
@@ -148,5 +151,9 @@ public abstract class BoardGame implements Observable {
 
     public Set<Coordinates> getPossibleMoves() {
         return possibleMoves;
+    }
+
+    public Player getWinner() {
+        return winner;
     }
 }
