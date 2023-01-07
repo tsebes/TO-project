@@ -18,9 +18,6 @@ public abstract class BoardGame implements Observable {
     protected final CommandHistory commandHistory = new CommandHistory();
     protected final Board board;
     protected Player currentTurn;
-    Set<Coordinates> takenPieces = new HashSet<>();
-    Set<Coordinates> startCoordinates = new HashSet<>();
-    Set<Coordinates> endCoordinates = new HashSet<>();
     private PieceType takenType;
 
     public BoardGame(Board board) {
@@ -80,14 +77,6 @@ public abstract class BoardGame implements Observable {
 
     public void move(Coordinates start, Coordinates end) {
         boolean jumpingMove = jumped(start, end);
-        startCoordinates.clear();
-        endCoordinates.clear();
-        startCoordinates.add(start);
-        endCoordinates.add(end);
-        takenPieces.clear();
-        if (jumpingMove) {
-            takenPieces = getTaken(start, end);
-        }
         Command moveCommand = new Move(commandHistory, board, start, end, getLast(getTaken(start, end)), takenType);
         moveCommand.execute();
         if (jumpingMove) {
