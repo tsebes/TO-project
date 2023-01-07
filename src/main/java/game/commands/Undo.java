@@ -15,14 +15,13 @@ public class Undo implements Command {
         undoneCommand.undo();
 
         history.push(this);
-        SaveCommands.getInstance().saveHistory("Undo");
+        SaveCommands.getInstance().saveHistory(this);
     }
 
     @Override
     public void undo() {
         undoneCommand.execute();
         history.push(undoneCommand);
-        SaveCommands.getInstance().saveHistory("Redo");
     }
 
     @Override

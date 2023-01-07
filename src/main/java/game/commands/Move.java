@@ -39,7 +39,7 @@ public class Move implements Command {
             fields[takenPiece.x()][takenPiece.y()].removePiece();
 
         history.push(this);
-        SaveCommands.getInstance().saveHistory(this.toString());
+        SaveCommands.getInstance().saveHistory(this);
     }
 
     @Override
