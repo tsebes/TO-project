@@ -97,6 +97,7 @@ public abstract class BoardGame implements Observable {
             Command undo = new Undo(commandHistory);
             undo.execute();
             changeTurn();
+            possibleMoves.clear();
             notifyBoardObservers();
         }
     }
@@ -106,11 +107,13 @@ public abstract class BoardGame implements Observable {
             Command redoCommand = commandHistory.pop();
             redoCommand.undo();
             changeTurn();
+            possibleMoves.clear();
             notifyBoardObservers();
         }
     }
 
     public Coordinates getLast(Set<Coordinates> set) {
+        System.out.println(set.size());
         Coordinates last = null;
         for (Coordinates c : set) {
             last = c;
