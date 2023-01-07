@@ -8,7 +8,7 @@ import java.util.Set;
 public class Piece {
 
     private final Player player;
-    private PieceType pieceType;
+    private final PieceType pieceType;
     private Strategy currentStrategy;
 
     public Piece(Player player, PieceType pieceType) {
@@ -26,10 +26,6 @@ public class Piece {
 
     public PieceType getPieceType() {
         return pieceType;
-    }
-
-    public void setPieceType(PieceType pieceType) {
-        this.pieceType = pieceType;
     }
 
     public Set<Coordinates> getPossibleMoves(Board board, Coordinates piece) {
