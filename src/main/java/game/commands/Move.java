@@ -1,9 +1,6 @@
 package game.commands;
 
-import game.Board;
-import game.Coordinates;
-import game.Field;
-import game.Piece;
+import game.*;
 import game.enums.PieceType;
 import game.enums.Player;
 
@@ -33,7 +30,9 @@ public class Move implements Command {
         piece = fields[start.x()][start.y()].getPiece();
         fields[start.x()][start.y()].removePiece();
         fields[end.x()][end.y()].setPiece(piece);
-        becomeKing();
+        if(RunGame.getInstance().getGame() instanceof CheckersGame){
+            becomeKing();
+        }
 
         if (takenPiece != null)
             fields[takenPiece.x()][takenPiece.y()].removePiece();
