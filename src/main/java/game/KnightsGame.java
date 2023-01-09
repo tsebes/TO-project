@@ -1,5 +1,7 @@
 package game;
 
+import game.commands.Command;
+import game.commands.Move;
 import game.enums.PieceType;
 import game.enums.Player;
 
@@ -103,5 +105,23 @@ public class KnightsGame extends BoardGame {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public void move(Coordinates start, Coordinates end) {
+        boolean jumpingMove = jumped(start, end);
+        Command moveCommand = new Move(commandHistory, board, start, end);
+        moveCommand.execute();
+        if (jumpingMove) {
+            board.setMultipleTake(canJump(end));
+        } else {
+            board.setMultipleTake(false);
+        }
+        if (!board.isMultipleTake()) {
+            changeTurn();
+        }
+        board.setCurrent(end);
+        possibleMoves.clear();
+        notifyBoardObservers();
     }
 }

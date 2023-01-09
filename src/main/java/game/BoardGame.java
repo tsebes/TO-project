@@ -32,68 +32,13 @@ public abstract class BoardGame implements Observable {
 
     public abstract void updatePossibleMoves(Coordinates piece);
 
+    public abstract void move(Coordinates start, Coordinates end);
+
     protected abstract boolean canJump(Coordinates piece);
 
     protected abstract boolean jumped(Coordinates start, Coordinates end);
 
     public abstract boolean gameEnded();
-
-    protected Set<Coordinates> getTaken(Coordinates start, Coordinates end) {
-        Set<Coordinates> takenPieces = new HashSet<>();
-        Coordinates temp;
-        int xAxis = Math.abs(start.x() - end.x());
-        int yAxis = Math.abs(start.y() - end.y());
-        int j = Math.max(xAxis, yAxis);
-
-        for (int i = 1; i < j; i++) {
-            if (end.x() > start.x() && end.y() > start.y()) {
-                temp = new Coordinates(start.x() + i, start.y() + i);
-                if (board.getField(temp).getPlayer() != currentTurn && !board.getField(temp).isEmpty()) {
-                    takenPieces.add(temp);
-                    takenType = board.getField(temp).getPieceType();
-                }
-            }
-            if (end.x() > start.x() && end.y() < start.y()) {
-                temp = new Coordinates(start.x() + i, start.y() - i);
-                if (board.getField(temp).getPlayer() != currentTurn && !board.getField(temp).isEmpty()) {
-                    takenPieces.add(temp);
-                    takenType = board.getField(temp).getPieceType();
-                }
-            }
-            if (end.x() < start.x() && end.y() > start.y()) {
-                temp = new Coordinates(start.x() - i, start.y() + i);
-                if (board.getField(temp).getPlayer() != currentTurn && !board.getField(temp).isEmpty()) {
-                    takenPieces.add(temp);
-                    takenType = board.getField(temp).getPieceType();
-                }
-            }
-            if (end.x() < start.x() && end.y() < start.y()) {
-                temp = new Coordinates(start.x() - i, start.y() - i);
-                if (board.getField(temp).getPlayer() != currentTurn && !board.getField(temp).isEmpty()) {
-                    takenPieces.add(temp);
-                    takenType = board.getField(temp).getPieceType();
-                }
-            }
-        }
-        return takenPieces;
-    }
-
-    public void move(Coordinates start, Coordinates end) {
-        boolean jumpingMove = jumped(start, end);
-        Command moveCommand = new Move(commandHistory, board, start, end, getLast(getTaken(start, end)), takenType);
-        moveCommand.execute();
-        if (jumpingMove) {
-            board.setMultipleTake(canJump(end));
-        } else {
-            board.setMultipleTake(false);
-        }
-        if (!board.isMultipleTake()) {
-            changeTurn();
-        }
-        board.setCurrent(end);
-        possibleMoves.clear();
-        notifyBoardObservers();
-    }
 
     public void undo() {
         if (commandHistory.canUndo()) {
@@ -113,15 +58,6 @@ public abstract class BoardGame implements Observable {
             possibleMoves.clear();
             notifyBoardObservers();
         }
-    }
-
-    public Coordinates getLast(Set<Coordinates> set) {
-        System.out.println(set.size());
-        Coordinates last = null;
-        for (Coordinates c : set) {
-            last = c;
-        }
-        return last;
     }
 
     @Override
