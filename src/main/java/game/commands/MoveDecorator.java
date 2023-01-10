@@ -69,15 +69,13 @@ public class MoveDecorator implements Command {
 
     @Override
     public String toString() {
-        String string = move.toString();
 
         if (takenPieceCoordinates != null) {
-            string = string + " and took " + takenPiece.getPieceType();
+            return "and took " + takenPiece.getPieceType();
         }
         if (becameKing) {
-            string = string + " and became a king";
+            return "and became a king";
         }
-
-        return string;
+        return "";
     }
 }
