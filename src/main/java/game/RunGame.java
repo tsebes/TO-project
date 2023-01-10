@@ -26,6 +26,9 @@ public class RunGame {
     }
 
     public BoardGame getGame() {
+        if (game == null) {
+            throw new IllegalStateException("Call newGameWithCreator() before getGame()");
+        }
         return game;
     }
 }
