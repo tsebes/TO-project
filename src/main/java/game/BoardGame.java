@@ -2,9 +2,7 @@ package game;
 
 import game.commands.Command;
 import game.commands.CommandHistory;
-import game.commands.Move;
 import game.commands.Undo;
-import game.enums.PieceType;
 import game.enums.Player;
 import gui.BoardObserver;
 
@@ -19,14 +17,13 @@ public abstract class BoardGame implements Observable {
     protected final Board board;
     protected Player currentTurn;
     protected Player winner;
-    private PieceType takenType;
 
     public BoardGame(Board board) {
         this.board = board;
         currentTurn = Player.WHITE;
     }
 
-    protected void changeTurn() {
+    public void changeTurn() {
         currentTurn = (currentTurn == Player.WHITE) ? Player.BLACK : Player.WHITE;
     }
 
@@ -34,9 +31,7 @@ public abstract class BoardGame implements Observable {
 
     public abstract void move(Coordinates start, Coordinates end);
 
-    protected abstract boolean canJump(Coordinates piece);
-
-    protected abstract boolean jumped(Coordinates start, Coordinates end);
+    public abstract boolean canJump(Coordinates piece);
 
     public abstract boolean gameEnded();
 
@@ -44,7 +39,6 @@ public abstract class BoardGame implements Observable {
         if (commandHistory.canUndo()) {
             Command undo = new Undo(commandHistory);
             undo.execute();
-            changeTurn();
             possibleMoves.clear();
             notifyBoardObservers();
         }
@@ -54,7 +48,6 @@ public abstract class BoardGame implements Observable {
         if (commandHistory.canRedo()) {
             Command redoCommand = commandHistory.pop();
             redoCommand.undo();
-            changeTurn();
             possibleMoves.clear();
             notifyBoardObservers();
         }
@@ -83,6 +76,10 @@ public abstract class BoardGame implements Observable {
 
     public Player getCurrentTurn() {
         return currentTurn;
+    }
+
+    public void setCurrentTurn(Player currentTurn) {
+        this.currentTurn = currentTurn;
     }
 
     public Set<Coordinates> getPossibleMoves() {

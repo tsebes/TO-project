@@ -4,7 +4,7 @@ public class Board {
 
     public static final int TILE_COUNT = 8;
     protected final Field[][] fields;
-    private boolean multipleTake;
+    private boolean multipleTake = false;
     private Coordinates current;
 
     public Board() {

@@ -9,6 +9,4 @@ public interface Observable {
     void removeBoardObserver(BoardObserver boardObserver);
 
     void notifyBoardObservers();
-
-    void move(Coordinates lastClicked, Coordinates coordinates);
 }

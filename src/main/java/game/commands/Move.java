@@ -1,43 +1,78 @@
 package game.commands;
 
-import game.*;
+import game.Board;
+import game.BoardGame;
+import game.Coordinates;
+import game.Piece;
+import game.enums.Player;
 
 public class Move implements Command {
 
-    private final CommandHistory history;
+    private final BoardGame game;
     private final Board board;
+
     private final Coordinates start;
     private final Coordinates end;
-    private Piece piece;
+    private final Piece piece;
 
-    public Move(CommandHistory history, Board board, Coordinates start, Coordinates end) {
-        this.history = history;
-        this.board = board;
+    private Player currentTurn;
+    private Coordinates current;
+    private boolean multipleTake;
+
+    public Move(BoardGame game, Coordinates start, Coordinates end) {
+        this.game = game;
+        this.board = game.getBoard();
         this.start = start;
         this.end = end;
+        this.piece = board.getField(start).getPiece();
     }
 
     @Override
     public void execute() {
-        Field[][] fields = board.getFields();
-        piece = fields[start.x()][start.y()].getPiece();
-        fields[start.x()][start.y()].removePiece();
-        fields[end.x()][end.y()].setPiece(piece);
+        board.getField(start).removePiece();
+        board.getField(end).setPiece(piece);
 
-        history.push(this);
+        currentTurn = game.getCurrentTurn();
+        current = board.getCurrent();
+        multipleTake = board.isMultipleTake();
+
+        game.changeTurn();
+
         SaveCommands.getInstance().saveHistory(this);
     }
 
     @Override
     public void undo() {
-        Field[][] fields = board.getFields();
-        piece = fields[end.x()][end.y()].getPiece();
-        fields[start.x()][start.y()].setPiece(piece);
-        fields[end.x()][end.y()].removePiece();
+        board.getField(start).setPiece(piece);
+        board.getField(end).removePiece();
+
+        game.setCurrentTurn(currentTurn);
+        board.setCurrent(current);
+        board.setMultipleTake(multipleTake);
     }
 
     @Override
     public String toString() {
         return piece.getPlayer() + " " + piece.getPieceType() + " moved from " + start + " to " + end;
+    }
+
+    public BoardGame getGame() {
+        return game;
+    }
+
+    public Board getBoard() {
+        return board;
+    }
+
+    public Coordinates getStart() {
+        return start;
+    }
+
+    public Coordinates getEnd() {
+        return end;
+    }
+
+    public Piece getPiece() {
+        return piece;
     }
 }

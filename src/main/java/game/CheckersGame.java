@@ -3,15 +3,11 @@ package game;
 import game.commands.Command;
 import game.commands.Move;
 import game.commands.MoveDecorator;
-import game.enums.PieceType;
 import game.enums.Player;
 
-import java.util.HashSet;
 import java.util.Set;
 
 public class CheckersGame extends BoardGame {
-
-    private PieceType takenType;
 
     public CheckersGame(Board board) {
         super(board);
@@ -47,13 +43,8 @@ public class CheckersGame extends BoardGame {
     }
 
     @Override
-    protected boolean canJump(Coordinates piece) {
+    public boolean canJump(Coordinates piece) {
         return ((getPossibleJumps(piece)).size() > 0);
-    }
-
-    @Override
-    protected boolean jumped(Coordinates start, Coordinates end) {
-        return (getTaken(start, end).size() > 0);
     }
 
     private Set<Coordinates> getPossibleMoves(Coordinates piece) {
@@ -104,8 +95,7 @@ public class CheckersGame extends BoardGame {
         return false;
     }
 
-    protected Set<Coordinates> getTaken(Coordinates start, Coordinates end) {
-        Set<Coordinates> takenPieces = new HashSet<>();
+    protected Coordinates getTaken(Coordinates start, Coordinates end) {
         Coordinates temp;
         int xAxis = Math.abs(start.x() - end.x());
         int yAxis = Math.abs(start.y() - end.y());
@@ -115,58 +105,36 @@ public class CheckersGame extends BoardGame {
             if (end.x() > start.x() && end.y() > start.y()) {
                 temp = new Coordinates(start.x() + i, start.y() + i);
                 if (board.getField(temp).getPlayer() != currentTurn && !board.getField(temp).isEmpty()) {
-                    takenPieces.add(temp);
-                    takenType = board.getField(temp).getPieceType();
+                    return temp;
                 }
             }
             if (end.x() > start.x() && end.y() < start.y()) {
                 temp = new Coordinates(start.x() + i, start.y() - i);
                 if (board.getField(temp).getPlayer() != currentTurn && !board.getField(temp).isEmpty()) {
-                    takenPieces.add(temp);
-                    takenType = board.getField(temp).getPieceType();
+                    return temp;
                 }
             }
             if (end.x() < start.x() && end.y() > start.y()) {
                 temp = new Coordinates(start.x() - i, start.y() + i);
                 if (board.getField(temp).getPlayer() != currentTurn && !board.getField(temp).isEmpty()) {
-                    takenPieces.add(temp);
-                    takenType = board.getField(temp).getPieceType();
+                    return temp;
                 }
             }
             if (end.x() < start.x() && end.y() < start.y()) {
                 temp = new Coordinates(start.x() - i, start.y() - i);
                 if (board.getField(temp).getPlayer() != currentTurn && !board.getField(temp).isEmpty()) {
-                    takenPieces.add(temp);
-                    takenType = board.getField(temp).getPieceType();
+                    return temp;
                 }
             }
         }
-        return takenPieces;
-    }
-
-    public Coordinates getLast(Set<Coordinates> set) {
-        System.out.println(set.size());
-        Coordinates last = null;
-        for (Coordinates c : set) {
-            last = c;
-        }
-        return last;
+        return null;
     }
 
     @Override
     public void move(Coordinates start, Coordinates end) {
-        boolean jumpingMove = jumped(start, end);
-        Command moveCommand = new MoveDecorator(commandHistory, board, start, end, getLast(getTaken(start, end)), takenType);
+        Command moveCommand = new MoveDecorator(new Move(this, start, end), getTaken(start, end));
         moveCommand.execute();
-        if (jumpingMove) {
-            board.setMultipleTake(canJump(end));
-        } else {
-            board.setMultipleTake(false);
-        }
-        if (!board.isMultipleTake()) {
-            changeTurn();
-        }
-        board.setCurrent(end);
+        commandHistory.push(moveCommand);
         possibleMoves.clear();
         notifyBoardObservers();
     }

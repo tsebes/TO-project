@@ -72,13 +72,8 @@ public class KnightsGame extends BoardGame {
     }
 
     @Override
-    protected boolean canJump(Coordinates piece) {
+    public boolean canJump(Coordinates piece) {
         return ((jumpMoves(piece)).size() > 0);
-    }
-
-    @Override
-    protected boolean jumped(Coordinates start, Coordinates end) {
-        return false;
     }
 
     @Override
@@ -88,19 +83,19 @@ public class KnightsGame extends BoardGame {
 
         for (int i = 0; i < Board.TILE_COUNT; i++) {
             for (int j = 0; j < Board.TILE_COUNT; j++) {
-                if (i < 6 && board.getField(new Coordinates(i, j)).getPlayer() == Player.BLACK){
+                if (i < 6 && board.getField(new Coordinates(i, j)).getPlayer() == Player.BLACK) {
                     blackWin = false;
                 }
-                if (i > 1 && board.getField(new Coordinates(i, j)).getPlayer() == Player.WHITE){
+                if (i > 1 && board.getField(new Coordinates(i, j)).getPlayer() == Player.WHITE) {
                     whiteWin = false;
                 }
             }
         }
-        if(blackWin){
+        if (blackWin) {
             winner = Player.BLACK;
             return true;
         }
-        if(whiteWin){
+        if (whiteWin) {
             winner = Player.WHITE;
             return true;
         }
@@ -109,18 +104,9 @@ public class KnightsGame extends BoardGame {
 
     @Override
     public void move(Coordinates start, Coordinates end) {
-        boolean jumpingMove = jumped(start, end);
-        Command moveCommand = new Move(commandHistory, board, start, end);
+        Command moveCommand = new Move(this, start, end);
         moveCommand.execute();
-        if (jumpingMove) {
-            board.setMultipleTake(canJump(end));
-        } else {
-            board.setMultipleTake(false);
-        }
-        if (!board.isMultipleTake()) {
-            changeTurn();
-        }
-        board.setCurrent(end);
+        commandHistory.push(moveCommand);
         possibleMoves.clear();
         notifyBoardObservers();
     }

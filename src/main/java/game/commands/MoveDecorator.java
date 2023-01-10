@@ -1,77 +1,68 @@
 package game.commands;
 
-import game.*;
+import game.Board;
+import game.Coordinates;
+import game.Piece;
 import game.enums.PieceType;
 import game.enums.Player;
 
-public class MoveDecorator extends Move {
+public class MoveDecorator implements Command {
 
-    private final CommandHistory history;
+    private final Move move;
     private final Board board;
     private final Coordinates start;
     private final Coordinates end;
-    private final Coordinates takenPiece;
-    private Piece piece;
-    private PieceType takenType;
+    private final Piece piece;
+    private final Coordinates takenPieceCoordinates;
+    private Piece takenPiece;
     private boolean becameKing;
 
-    public MoveDecorator(CommandHistory history, Board board, Coordinates start, Coordinates end, Coordinates takenPiece, PieceType takenType) {
-        super(history, board, start, end);
-        this.history = history;
-        this.board = board;
-        this.start = start;
-        this.end = end;
-        this.takenPiece = takenPiece;
-        this.takenType = takenType;
+    public MoveDecorator(Move move, Coordinates takenPieceCoordinates) {
+        this.move = move;
+        this.board = move.getBoard();
+        this.start = move.getStart();
+        this.end = move.getEnd();
+        this.piece = move.getPiece();
+        this.takenPieceCoordinates = takenPieceCoordinates;
     }
 
     @Override
     public void execute() {
-        Field[][] fields = board.getFields();
-        piece = fields[start.x()][start.y()].getPiece();
-        fields[start.x()][start.y()].removePiece();
-        fields[end.x()][end.y()].setPiece(piece);
+        move.execute();
         becomeKing();
 
-        if (takenPiece != null)
-            fields[takenPiece.x()][takenPiece.y()].removePiece();
+        if (takenPieceCoordinates != null) {
+            takenPiece = board.getField(takenPieceCoordinates).getPiece();
+            board.getField(takenPieceCoordinates).removePiece();
+            board.setMultipleTake(move.getGame().canJump(end));
+        } else {
+            board.setMultipleTake(false);
+        }
 
-        history.push(this);
+        if (board.isMultipleTake()) {
+            move.getGame().changeTurn();
+        }
+        board.setCurrent(end);
+
         SaveCommands.getInstance().saveHistory(this);
     }
 
     @Override
     public void undo() {
-        Field[][] fields = board.getFields();
-        piece = fields[end.x()][end.y()].getPiece();
-        if (becameKing) {
-            piece = new Piece(piece.getPlayer(), PieceType.MAN);
-        }
-        fields[start.x()][start.y()].setPiece(piece);
-        fields[end.x()][end.y()].removePiece();
-
-        if (takenPiece != null) {
-            if (piece.getPlayer() == Player.WHITE && takenType == PieceType.MAN)
-                fields[takenPiece.x()][takenPiece.y()].setPiece(new Piece(Player.BLACK, PieceType.MAN));
-            else if (piece.getPlayer() == Player.WHITE && takenType == PieceType.KING)
-                fields[takenPiece.x()][takenPiece.y()].setPiece(new Piece(Player.BLACK, PieceType.KING));
-            else if (piece.getPlayer() == Player.BLACK && takenType == PieceType.KING)
-                fields[takenPiece.x()][takenPiece.y()].setPiece(new Piece(Player.WHITE, PieceType.KING));
-            else
-                fields[takenPiece.x()][takenPiece.y()].setPiece(new Piece(Player.WHITE, PieceType.MAN));
+        move.undo();
+        if (takenPieceCoordinates != null) {
+            board.getField(takenPieceCoordinates).setPiece(takenPiece);
         }
     }
 
-
     private void becomeKing() {
-        Field[][] fields = board.getFields();
         becameKing = false;
 
         if (piece.getPieceType() == PieceType.MAN && end.x() == 0 && piece.getPlayer() == Player.WHITE) {
-            fields[end.x()][end.y()].setPiece(new Piece(Player.WHITE, PieceType.KING));
+            board.getField(end).setPiece(new Piece(Player.WHITE, PieceType.KING));
             becameKing = true;
         } else if (piece.getPieceType() == PieceType.MAN && end.x() == 7 && piece.getPlayer() == Player.BLACK) {
-            fields[end.x()][end.y()].setPiece(new Piece(Player.BLACK, PieceType.KING));
+            board.getField(end).setPiece(new Piece(Player.BLACK, PieceType.KING));
             becameKing = true;
         }
     }
@@ -80,8 +71,8 @@ public class MoveDecorator extends Move {
     public String toString() {
         if (becameKing)
             return piece.getPlayer() + " " + piece.getPieceType() + " moved from " + start + " to " + end + " and became a king";
-        else if (takenPiece != null)
-            return piece.getPlayer() + " " + piece.getPieceType() + " moved from " + start + " to " + end + " and took " + takenType;
+        else if (takenPieceCoordinates != null)
+            return piece.getPlayer() + " " + piece.getPieceType() + " moved from " + start + " to " + end + " and took " + takenPiece.getPieceType();
         else
             return piece.getPlayer() + " " + piece.getPieceType() + " moved from " + start + " to " + end;
     }
