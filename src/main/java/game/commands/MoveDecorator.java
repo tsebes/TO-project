@@ -10,7 +10,6 @@ public class MoveDecorator implements Command {
 
     private final Move move;
     private final Board board;
-    private final Coordinates start;
     private final Coordinates end;
     private final Piece piece;
     private final Coordinates takenPieceCoordinates;
@@ -20,7 +19,6 @@ public class MoveDecorator implements Command {
     public MoveDecorator(Move move, Coordinates takenPieceCoordinates) {
         this.move = move;
         this.board = move.getBoard();
-        this.start = move.getStart();
         this.end = move.getEnd();
         this.piece = move.getPiece();
         this.takenPieceCoordinates = takenPieceCoordinates;

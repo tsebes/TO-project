@@ -64,10 +64,6 @@ public class Move implements Command {
         return board;
     }
 
-    public Coordinates getStart() {
-        return start;
-    }
-
     public Coordinates getEnd() {
         return end;
     }
