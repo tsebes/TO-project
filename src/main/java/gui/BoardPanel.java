@@ -20,12 +20,10 @@ public class BoardPanel extends JPanel implements BoardObserver {
     private static final Color CAN_BE_CHOSEN = new Color(150, 150, 150);
 
     private final Tile[][] tiles = new Tile[TILE_COUNT][TILE_COUNT];
-
+    private final GUIObserver guiObserver;
     private Coordinates lastClicked;
-
     private BoardGame game;
     private Board board;
-    private final GUIObserver guiObserver;
 
     public BoardPanel(GUIObserver guiObserver) {
         this.guiObserver = guiObserver;
@@ -115,10 +113,9 @@ public class BoardPanel extends JPanel implements BoardObserver {
 
     @Override
     public void update() {
-        if(game.gameEnded()){
+        if (game.gameEnded()) {
             guiObserver.update(GUI.Panel.Winner);
-        }
-        else{
+        } else {
             refreshTiles();
         }
     }

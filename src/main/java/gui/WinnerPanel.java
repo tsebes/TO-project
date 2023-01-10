@@ -7,10 +7,9 @@ import game.commands.SaveCommands;
 import javax.swing.*;
 import java.awt.*;
 
-public class WinnerPanel  extends JPanel {
+public class WinnerPanel extends JPanel {
     private final GUIObserver guiObserver;
     private JLabel winnerMessage;
-    private BoardGame game;
 
     public WinnerPanel(GUIObserver guiObserver) {
         this.guiObserver = guiObserver;
@@ -29,8 +28,8 @@ public class WinnerPanel  extends JPanel {
         add(winnerMessage);
     }
 
-    public void updateMessage(){
-        game = RunGame.getInstance().getGame();
+    public void updateMessage() {
+        BoardGame game = RunGame.getInstance().getGame();
         winnerMessage.setText(game.getWinner() + " has won!!!");
     }
 
