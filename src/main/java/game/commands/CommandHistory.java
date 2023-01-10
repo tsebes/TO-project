@@ -15,7 +15,7 @@ public class CommandHistory {
     }
 
     public boolean canUndo() {
-        return !history.isEmpty() && history.peek().getClass().equals(Move.class) || history.peek().getClass().equals(MoveDecorator.class);
+        return !history.isEmpty() && !history.peek().getClass().equals(Undo.class);
     }
 
     public boolean canRedo() {
