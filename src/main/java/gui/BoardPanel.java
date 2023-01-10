@@ -1,8 +1,6 @@
 package gui;
 
 import game.*;
-import game.enums.PieceType;
-import game.enums.Player;
 import gui.boardcomponents.PieceShapeFactory;
 import gui.boardcomponents.PieceView;
 import gui.boardcomponents.Tile;
@@ -56,18 +54,9 @@ public class BoardPanel extends JPanel implements BoardObserver {
                 if (fields[i][j].isEmpty()) {
                     tiles[i][j].removePiece();
                     tiles[i][j].setEnabled(false);
-                } else if (fields[i][j].getPlayer() == Player.BLACK && fields[i][j].getPieceType() == PieceType.MAN) {
-                    tiles[i][j].setPiece(new PieceView(PieceShapeFactory.getBlackMan()));
-                    tiles[i][j].setEnabled(game.getCurrentTurn() == Player.BLACK);
-                } else if (fields[i][j].getPlayer() == Player.WHITE && fields[i][j].getPieceType() == PieceType.MAN) {
-                    tiles[i][j].setPiece(new PieceView(PieceShapeFactory.getWhiteMan()));
-                    tiles[i][j].setEnabled(game.getCurrentTurn() == Player.WHITE);
-                } else if (fields[i][j].getPlayer() == Player.BLACK && fields[i][j].getPieceType() == PieceType.KING) {
-                    tiles[i][j].setPiece(new PieceView(PieceShapeFactory.getBlackKing()));
-                    tiles[i][j].setEnabled(game.getCurrentTurn() == Player.BLACK);
-                } else if (fields[i][j].getPlayer() == Player.WHITE && fields[i][j].getPieceType() == PieceType.KING) {
-                    tiles[i][j].setPiece(new PieceView(PieceShapeFactory.getWhiteKing()));
-                    tiles[i][j].setEnabled(game.getCurrentTurn() == Player.WHITE);
+                } else {
+                    tiles[i][j].setPiece(new PieceView(PieceShapeFactory.getShapeFromPiece(fields[i][j].getPiece())));
+                    tiles[i][j].setEnabled(game.getCurrentTurn() == fields[i][j].getPiece().getPlayer());
                 }
             }
         }
