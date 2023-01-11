@@ -21,3 +21,6 @@ Wzorce projektowe:
 6. Obserwator - aktualizacja planszy
 7. Singleton - zapisywanie ruchów do pliku
 8. Strategia - pionek może zmienić się w królówkę
+
+
+Aby uruchomić aplikację należy uruchomić klasę Main
