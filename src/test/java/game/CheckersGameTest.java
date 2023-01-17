@@ -78,4 +78,32 @@ public class CheckersGameTest {
         Assertions.assertEquals(possibleMoves, game.getPossibleMoves());
     }
 
+    @Test
+    public void shouldMoveWhitePiece() {
+        Coordinates start = new Coordinates(5, 4);
+        Coordinates end = new Coordinates(4, 3);
+        Piece movedPiece = game.getBoard().getField(start).getPiece();
+
+        Assertions.assertTrue(game.getBoard().getField(end).isEmpty());
+
+        game.move(start, end);
+
+        Assertions.assertTrue(game.getBoard().getField(start).isEmpty());
+        Assertions.assertSame(game.getBoard().getField(end).getPiece(), movedPiece);
+    }
+
+    @Test
+    public void shouldMoveBlackPiece() {
+        Coordinates start = new Coordinates(2, 5);
+        Coordinates end = new Coordinates(3, 4);
+        Piece movedPiece = game.getBoard().getField(start).getPiece();
+
+        Assertions.assertTrue(game.getBoard().getField(end).isEmpty());
+
+        game.move(start, end);
+
+        Assertions.assertTrue(game.getBoard().getField(start).isEmpty());
+        Assertions.assertSame(game.getBoard().getField(end).getPiece(), movedPiece);
+    }
+
 }
