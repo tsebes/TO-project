@@ -1,6 +1,7 @@
 package game;
 
 import game.creators.CheckersCreator;
+import game.enums.PieceType;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -106,4 +107,70 @@ public class CheckersGameTest {
         Assertions.assertSame(game.getBoard().getField(end).getPiece(), movedPiece);
     }
 
+    @Test
+    public void shouldMakeUndoMove_whenWhitePiece() {
+        Coordinates start = new Coordinates(5, 4);
+        Coordinates end = new Coordinates(4, 3);
+        Piece movedPiece = game.getBoard().getField(start).getPiece();
+
+        game.move(start, end);
+        game.undo();
+
+        Assertions.assertTrue(game.getBoard().getField(end).isEmpty());
+        Assertions.assertSame(game.getBoard().getField(start).getPiece(), movedPiece);
+    }
+
+    @Test
+    public void shouldMakeUndoMove_whenBlackPiece() {
+        Coordinates start = new Coordinates(2, 5);
+        Coordinates end = new Coordinates(3, 4);
+        Piece movedPiece = game.getBoard().getField(start).getPiece();
+
+        game.move(start, end);
+        game.undo();
+
+        Assertions.assertTrue(game.getBoard().getField(end).isEmpty());
+        Assertions.assertSame(game.getBoard().getField(start).getPiece(), movedPiece);
+    }
+
+    @Test
+    public void shouldMakeRedoMove_whenWhitePiece() {
+        Coordinates start = new Coordinates(5, 4);
+        Coordinates end = new Coordinates(4, 3);
+        Piece movedPiece = game.getBoard().getField(start).getPiece();
+
+        game.move(start, end);
+        game.undo();
+        game.redo();
+
+        Assertions.assertTrue(game.getBoard().getField(start).isEmpty());
+        Assertions.assertSame(game.getBoard().getField(end).getPiece(), movedPiece);
+    }
+
+    @Test
+    public void shouldMakeRedoMove_whenBlackPiece() {
+        Coordinates start = new Coordinates(2, 5);
+        Coordinates end = new Coordinates(3, 4);
+        Piece movedPiece = game.getBoard().getField(start).getPiece();
+
+        game.move(start, end);
+        game.undo();
+        game.redo();
+
+        Assertions.assertTrue(game.getBoard().getField(start).isEmpty());
+        Assertions.assertSame(game.getBoard().getField(end).getPiece(), movedPiece);
+    }
+
+    @Test
+    public void shouldNotMakeRedoMove_whenNoUndoMove() {
+        Coordinates start = new Coordinates(2, 5);
+        Coordinates end = new Coordinates(3, 4);
+        Piece movedPiece = game.getBoard().getField(start).getPiece();
+
+        game.move(start, end);
+        game.redo();
+
+        Assertions.assertTrue(game.getBoard().getField(start).isEmpty());
+        Assertions.assertSame(game.getBoard().getField(end).getPiece(), movedPiece);
+    }
 }
